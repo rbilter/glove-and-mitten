@@ -1,0 +1,221 @@
+# Glove and Mitten Project .gitignore
+# This file ensures we preserve all creative assets while excluding system/temp files
+
+# =============================================================================
+# PRESERVE ALL CREATIVE ASSETS - DO NOT IGNORE
+# =============================================================================
+# We want to keep ALL of these file types:
+# *.png, *.jpg, *.jpeg, *.gif (images)
+# *.mp3, *.wav, *.m4a (audio)
+# *.pptx, *.ppt (PowerPoint templates/episodes)
+# *.docx, *.doc (story documents)
+# *.md (markdown documentation)
+# *.pdf (any PDF documents)
+
+# =============================================================================
+# OPERATING SYSTEM FILES
+# =============================================================================
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# =============================================================================
+# PRODUCTION FILES (HANDLED BY GOOGLE DRIVE)
+# =============================================================================
+
+# Production build artifacts - large files synced via Google Drive
+production/completed/videos/
+production/in-progress/
+
+# =============================================================================
+# TEMPORARY & CACHE FILES
+# =============================================================================
+
+# General temporary files
+*.tmp
+*.temp
+*.log
+*.cache
+*.bak
+*.swp
+*.swo
+*~
+
+# Microsoft Office temporary files
+~$*.docx
+~$*.pptx
+~$*.xlsx
+*.tmp
+
+# =============================================================================
+# DEVELOPMENT & EDITOR FILES
+# =============================================================================
+
+# VS Code
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+.vscode/c_cpp_properties.json
+# Note: We keep .vscode/tasks.json for build tasks
+
+# Other editors
+*.sublime-project
+*.sublime-workspace
+.idea/
+*.vim
+
+# =============================================================================
+# PRODUCTION OUTPUT (if generated)
+# =============================================================================
+
+# Video export files (if auto-generated, keep manual exports)
+/production/exports/
+/production/temp/
+/production/cache/
+
+# Rendered video files (if auto-generated from templates)
+# Note: Keep manually created final videos
+*_temp.mp4
+*_temp.mov
+*_draft.mp4
+*_draft.mov
+
+# =============================================================================
+# BACKUP & VERSION FILES
+# =============================================================================
+
+# Automatic backup files
+*.backup
+*_backup.*
+*_old.*
+*_prev.*
+
+# Version control artifacts from other systems
+.svn/
+.hg/
+.bzr/
+
+# =============================================================================
+# GOOGLE DRIVE & CLOUD SYNC FILES
+# =============================================================================
+
+# Google Drive sync conflicts
+*conflicted copy*
+*conflict*
+
+# OneDrive
+*.tmp
+desktop.ini
+
+# Dropbox
+.dropbox
+.dropbox.attr
+.dropbox.cache
+
+# =============================================================================
+# RCLONE CACHE (our Google Drive sync tool)
+# =============================================================================
+.rclone/
+
+# =============================================================================
+# NODE.JS (if we add any web tools later)
+# =============================================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# =============================================================================
+# PYTHON (if we add any automation scripts)
+# =============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# =============================================================================
+# LOGS & DEBUG FILES
+# =============================================================================
+*.log
+logs/
+*.debug
+
+# =============================================================================
+# SECURITY & CONFIGURATION
+# =============================================================================
+
+# API keys and secrets (if we add any automation)
+.env
+.env.local
+.env.production
+.env.staging
+secrets.json
+config.secret.*
+
+# =============================================================================
+# LARGE FILES (if needed, use Git LFS instead)
+# =============================================================================
+# Uncomment these if files get too large for git:
+# *.mp4
+# *.mov
+# *.avi
+# But for now we want to preserve everything!
+
+# =============================================================================
+# EXAMPLES OF WHAT WE ARE KEEPING (for reference)
+# =============================================================================
+# All these file types are preserved:
+# - *.md (series-bible.md, project-structure.md, README.md)
+# - *.docx (all story documents and character backstories)
+# - *.pptx (episode templates and completed episodes)
+# - *.png (all character images and backgrounds)
+# - *.mp3 (all audio files)
+# - All folder structure and organization
