@@ -18,8 +18,9 @@ Ensures local changes are properly committed to Git and synchronized with Google
 1. ✅ **Checks local status** - Shows what files have changed
 2. ✅ **Stages all changes** to Git
 3. ✅ **Commits with descriptive message** based on actual changes
-4. ✅ **Syncs to Google Drive** via rclone
-5. ✅ **Verifies sync status** and reports any issues
+4. ✅ **Pushes to remote repository** (GitHub)
+5. ✅ **Syncs to Google Drive** via rclone
+6. ✅ **Verifies sync status** and reports any issues
 
 ## Workflow Steps
 
@@ -50,13 +51,18 @@ Ensures local changes are properly committed to Git and synchronized with Google
    git commit -m "[Generated message based on changes]"
    ```
 
+6. **Push to Remote Repository**
+   ```bash
+   git push origin main
+   ```
+
 ### Phase 3: Google Drive Sync
-6. **Sync to Google Drive**
+7. **Sync to Google Drive**
    ```bash
    rclone sync . gdrive:glove-and-mitten --exclude .git/ --progress
    ```
 
-7. **Verify Sync**
+8. **Verify Sync**
    ```bash
    rclone check . gdrive:glove-and-mitten --exclude .git/
    ```

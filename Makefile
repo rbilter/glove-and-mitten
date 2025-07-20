@@ -50,8 +50,9 @@ commit-local:
 	@echo "The assistant will:"
 	@echo "  1. Check local changes"
 	@echo "  2. Stage and commit to Git"
-	@echo "  3. Sync to Google Drive"
-	@echo "  4. Verify sync status"
+	@echo "  3. Push to GitHub remote"
+	@echo "  4. Sync to Google Drive"
+	@echo "  5. Verify sync status"
 
 # Clean generated files
 clean:
