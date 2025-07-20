@@ -71,6 +71,10 @@ production/in-progress/
 ~$*.xlsx
 *.tmp
 
+# LibreOffice lock and temporary files
+.~lock.*#
+*.tmp
+
 # =============================================================================
 # DEVELOPMENT & EDITOR FILES
 # =============================================================================
