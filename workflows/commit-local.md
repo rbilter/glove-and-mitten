@@ -8,7 +8,7 @@ Ensures local changes are properly committed to Git and synchronized with Google
 - `make commit-local` (primary command)
 - `make sync` (alias for commit-local)
 
-**Natural Language:**
+**Assistant Integration:**
 - "Commit local changes and sync"
 - "Run commit-local workflow"
 - "Run sync workflow"

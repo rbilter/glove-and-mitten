@@ -1,11 +1,13 @@
 # Glove and Mitten
 
-A creative project for developing YouTube ep## Getting Started
+A creative project for developing YouTube episodes featuring the characters Glove and Mitten in their adventures.
+
+## Getting Started
 
 1. Read [Series Bible](series-bible.md) for character guidelines
 2. Explore [Project Structure](project-structure.md) for organization
 3. Use `make help` to see available automation commands
-4. Start creating episodes using saga templates in `stories/sagas/`s featuring the characters Glove and Mitten in their adventures at Accessory Academy.
+4. Start creating episodes using saga templates in `stories/sagas/`
 
 ## Project Overview
 
@@ -30,9 +32,9 @@ make commit-local           # Commit changes and sync to Google Drive
 make sync                   # Alias for commit-local
 make status                 # Show project status
 
-# Using natural language with assistant
-# Tell the assistant: "Process episode: [path-to-episode.pptx]"
-# Tell the assistant: "Run commit-local workflow"
+# Direct workflow access
+workflows/process-episode.md     # Episode processing workflow
+workflows/commit-local.md        # Git + GitHub + Google Drive sync
 ```
 
 ## Project Structure
@@ -58,20 +60,22 @@ make status                 # Show project status
 
 ### Automation Workflows
 - **[Process Episode](workflows/process-episode.md)** - PowerPoint → PDF → YouTube metadata
-- **[Commit Local](workflows/commit-local.md)** - Git commit + Google Drive sync
+- **[Commit Local](workflows/commit-local.md)** - Git + GitHub + Google Drive sync
 
 ## Stats
 
-- **39 directories** with organized creative assets
-- **70 files** including episodes, characters, and documentation
-- **Hybrid workflow** combining version control with cloud collaboration
+- **170 directories** with organized creative assets
+- **234 files** including episodes, characters, documentation, and media assets
+- **10 markdown files** for comprehensive documentation
+- **Hybrid workflow** combining Git version control with Google Drive cloud sync
 - **Automated metadata** generation from actual episode content
+- **GitHub integration** with SSH remote for collaboration
 
-## Getting Started
+## Development Workflow
 
-1. Review the [Series Bible](series-bible.md) for character guidelines
-2. Check [Project Structure](project-structure.md) for organization
-3. Use [Production Workflow](production/WORKFLOW.md) for episode creation
-4. Start creating episodes in `stories/sagas/[saga]/stories/`
+1. **Create Episodes** using PowerPoint templates in saga directories
+2. **Process Episodes** with `make process-episode` to generate metadata
+3. **Commit Changes** with `make commit-local` for Git + Google Drive sync
+4. **Collaborate** via GitHub repository with automatic cloud backup
 
 Ready to bring Glove and Mitten's adventures to life! 🎬

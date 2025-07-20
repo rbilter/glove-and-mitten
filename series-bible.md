@@ -3,70 +3,40 @@
 ## Series Overview
 
 **Title**: "The Adventures of Glove and Mitten"  
-**Format**: 3-5 panel comic strip episodes for YouTube  
+**Format**: Multi-panel comic strip episodes for YouTube  
 **Genre**: Family-friendly comedy/educational  
 **Target Audience**: All ages, focusing on children and families  
 **Core Theme**: Friendship, problem-solving, and learning through everyday adventures
 
-## Main Characters
+## Creative Philosophy
 
-### Glove
-**Character Type**: Five-fingered work glove  
-**Personality Traits**:
-- Practical and methodical
-- Good at grasping details (literally and figuratively)  
-- Sometimes overthinks situations and gets frustrated
-- Can be impatient when Mitten doesn't "get it" quickly
-- The "doer" of the pair
+### Character Development Approach
+- Characters should feel authentic and relatable to children's experiences
+- Friendships include real conflicts and disagreements alongside support and fun
+- Growth happens through making mistakes and learning from them
+- Characters have distinct personalities that complement and sometimes clash with each other
+- Supporting characters serve specific narrative purposes within their story worlds
 
-**Visual Expressions Available**: Angry, Confused, Serious  
-**Role**: Often takes the lead in problem-solving situations, sometimes clashing with Mitten's approach
+### Storytelling Principles
+- **Authentic Relationships**: Real friendships include disagreements and working through differences
+- **Educational Integration**: Learning moments feel natural, never forced or preachy
+- **Conflict Resolution**: Characters model healthy ways to handle disagreements
+- **Emotional Intelligence**: Stories acknowledge and validate different emotional responses
+- **Growth Mindset**: Mistakes and challenges are opportunities for learning and development
 
-### Mitten
-**Character Type**: Cozy winter mitten  
-**Personality Traits**:
-- Warm-hearted and optimistic
-- Sees the big picture but sometimes misses important details
-- Can be stubborn when they believe they're right
-- Gets defensive when Glove is too critical
-- The "feeler" of the pair
+## World Building Framework
 
-**Visual Expressions Available**: Angry, Happy, Sad, Sleepy, Surprised  
-**Role**: Provides emotional support and different perspectives, sometimes disagreeing with Glove's methods
+### Saga Structure Approach
+- Each saga operates as its own contained world with unique supporting characters
+- Main characters bridge all worlds, providing series continuity
+- Settings should feel familiar and relatable to target audience experiences
+- Environmental storytelling supports character development and plot advancement
 
-## Supporting Characters
-
-### Character Scope Rules
-- **Main Characters**: Glove and Mitten appear across all sagas and storylines
-- **Supporting Characters**: Saga-specific and only appear within their designated saga world
-
-### School-Daze Saga Characters
-- **Principal Watch**: Authority figure in school settings
-- **Instructor Beaker**: Educational/science teacher character
-
-### Mis-Adventures Saga Characters
-- **To be developed**: Supporting characters specific to comedy storylines
-
-### Universal Characters
-- **Fingers and Hand**: [Based on character files - relationship to main characters across sagas]
-
-## World Building
-
-### Saga-Specific Worlds
-Each saga operates as its own contained world with unique supporting characters, while Glove and Mitten bridge all worlds.
-
-### School-Daze World
-**Primary Settings**:
-- Classrooms with science equipment
-- Principal's office
-- Playground areas
-- School hallways and common areas
-
-**Supporting Characters**: Principal Watch, Instructor Beaker
-
-### Mis-Adventures World
-**Primary Settings**: To be developed based on comedy storylines
-**Supporting Characters**: To be developed
+### Setting Development Guidelines
+- Environments should reflect the story's emotional tone
+- Settings can be educational without being classroom-heavy
+- Multiple locations within each saga provide variety and storytelling opportunities
+- Visual consistency within each saga world while allowing for distinct saga identities
 
 **Tone**: Optimistic, educational, with gentle humor that doesn't mock or demean
 
@@ -76,151 +46,101 @@ Each saga operates as its own contained world with unique supporting characters,
 - Detailed backgrounds supporting story context
 - School-appropriate, family-friendly imagery
 
-## Episode Structure
+## Episode Development Framework
 
-### Format Options
-1. **3-Panel Episodes**: Quick jokes or simple problems
-2. **4-Panel Episodes**: Setup, problem, attempt, resolution
-3. **5-Panel Episodes**: Extended storytelling with character development
-4. **4-Scene Audio Episodes**: Multi-scene episodes with narration and sound effects (as developed in tuff-daze)
+### Format Flexibility
+- Episode length should serve the story, not arbitrary constraints
+- Panel count can vary based on narrative needs (3-5 panels typical)
+- Multi-scene episodes allow for more complex storytelling
+- Audio integration enhances storytelling without being required
 
-### Episode Types
+### Story Category System
+- **Ideas**: Single-episode concepts for quick development
+- **Sagas**: Multi-episode arcs for deeper character and story development
+- Categories can evolve based on storytelling needs
+- Nested storytelling allows for complexity within familiar frameworks
 
-#### Mis-Adventures
-**Theme**: Comedy through misunderstandings, mishaps, and character conflicts  
-**Tone**: Light-hearted, learning from mistakes and disagreements
-**Examples**: Happy birthday mix-ups, communication problems, friendly arguments that get out of hand
+## Content Development Guidelines
 
-#### School-Daze
-**Theme**: Educational adventures and school life, including academic and social challenges
-**Sub-categories**:
-- **Lights**: Discovery, learning moments, "aha!" experiences, working together despite differences
-- **Tuff-Daze**: Overcoming challenges, difficult lessons, perseverance, resolving conflicts
-
-## Story Guidelines
-
-### Core Values
-- **Friendship**: Glove and Mitten complement each other's strengths, even when they disagree
-- **Problem-Solving**: Creative solutions through collaboration (and sometimes friendly arguments)
-- **Learning**: Educational content woven naturally into stories, including learning from disagreements
-- **Resilience**: Bouncing back from mistakes, conflicts, and setbacks
-- **Authentic Relationships**: Real friendships include disagreements and working through differences
-- **Kindness**: Ultimately caring for each other despite occasional friction
+### Core Values Framework
+- **Friendship**: Relationships include both support and healthy conflict
+- **Problem-Solving**: Solutions emerge through collaboration and different perspectives
+- **Learning**: Educational content feels natural and discovery-based
+- **Resilience**: Characters model bouncing back from setbacks and mistakes
+- **Authenticity**: Relationships reflect real-world dynamics appropriate for the audience
+- **Kindness**: Underlying care and respect, even during disagreements
 
 ### Content Standards
-- Family-friendly language and situations
-- PG-level conflict (disagreements, frustration, but no meanness or cruelty)
-- Characters can be confrontational but always resolve differences respectfully
-- Educational elements that feel fun, not preachy
-- Diverse perspectives and inclusive storytelling
-- Realistic relationship dynamics with conflict resolution
+- Family-friendly language and age-appropriate conflict
+- Characters can disagree and be frustrated without being mean or cruel
+- Educational elements should enhance rather than drive the story
+- Diverse perspectives and inclusive storytelling approaches
+- Conflict resolution models healthy relationship skills
 
-## Production Specifications
+## Production Philosophy
 
-### YouTube Format
-- **Duration**: 60-120 seconds per episode
-- **Panel Transition**: Smooth, engaging pacing
-- **Audio**: Optional narration/dialogue with sound effects
-- **Multi-Scene Format**: Some episodes use 4-scene structure with dedicated audio tracks
-- **Presentation Integration**: PowerPoint-based episode templates for consistent production
-- **End Cards**: Series continuity and call-to-action
+### Visual Storytelling Approach
+- Clear character expressions that convey emotion effectively
+- Environmental details that support story context
+- Consistent visual style that allows for creative flexibility
+- Accessibility considerations for all reading and comprehension levels
 
-### Visual Assets
-- Character expressions for different emotions
-- Background elements organized by location and context:
-  - School buildings (exterior views)
-  - Classroom environments (floors, clocks, equipment, posters)
-  - Principal's office (furniture and decor)
-  - Playground areas (equipment, fencing, structures)
-  - Supporting characters (teachers and authority figures)
-  - Natural elements (flora, fauna, weather)
-  - Props and transportation (buses, phones, effects)
-- Consistent art style across episodes
-- Saga-specific PowerPoint episode templates for production workflow
-- Series-wide branding templates (intro/outro cards, title cards, end cards)
+### Development Workflow
+- Template-based production for consistency and efficiency
+- Flexible asset organization that supports creative iteration
+- Integration of multiple media types (visual, audio, text) as story needs require
+- Scalable production processes that can grow with the series
 
-### Audio Assets
-- Episode-specific audio files stored with their respective stories
-- Reusable audio elements (intros, outros, sound effects) stored in central assets/audio/
-- Multi-scene audio components for enhanced storytelling (4-scene structure)
+## Series Continuity Approach
 
-### Template Assets
-- Saga-specific episode templates stored with their respective sagas
-- Series-wide branding and production templates stored in central assets/templates/
-- Generic episode frameworks available for adaptation across sagas
+### Character Growth Framework
+- Characters learn and develop across episodes and story arcs
+- Conflicts create opportunities for growth and deeper understanding
+- References to previous episodes can create ongoing narrative threads
+- Character development should feel natural and earned
+- Growth happens through experience, not exposition
 
-## Series Continuity
+### Seasonal and Thematic Development
+- Content can reflect seasonal experiences and celebrations
+- Themes should resonate with audience life experiences
+- Educational content can align with school calendars and developmental stages
+- Stories can address both universal and timely topics
 
-### Character Development
-- Glove and Mitten learn from each episode, including how to handle disagreements
-- Character conflicts create growth opportunities
-- Supporting characters have their own growth arcs within their specific sagas
-- References to previous episodes create ongoing narrative threads within each saga
-- Characters can have bad days, make mistakes, and sometimes clash with friends
-- **Character Organization**: Main characters stored in `/characters/main/`, saga-specific characters in `/characters/sagas/[saga-name]/`
-
-### Seasonal Content
-- Back-to-school themes
-- Holiday celebrations  
-- End-of-year reflections
-- Summer break adventures
-
-## Story Categories
-
-### Ideas (Single Episodes)
-- **Mis-Adventures**: Standalone comedy episodes
-- **School-Daze**: Educational single-episode stories
-  - Playground-based adventures and social interactions
-
-### Sagas (Multi-Episode Arcs)
-- **Mis-Adventures**: Extended comedy storylines
-- **School-Daze**: 
-  - **Stories**: General multi-part school adventures
-  - **Lights**: Learning and discovery story arcs *(Currently in development)*
-    - Features "lightbulb moment" educational content
-    - Includes nested **Tuff-Daze** episodes for overcoming specific challenges
-  - **Tuff-Daze**: Challenge-focused episodes *(Episode 01 completed with 4-scene audio format)*
-
-### Current Saga Development
-**School-Daze Lights Saga**: 
-- **Status**: Active development with episode templates and audio production
-- **Format**: 4-scene episodes with individual scene audio tracks
-- **Structure**: Progressive difficulty with tuff-daze challenges embedded within lights discoveries
-- **Production**: PowerPoint-based episode creation with integrated audio elements
-
-## Brand Identity
+## Brand Identity Framework
 
 ### Mission Statement
-"Glove and Mitten" creates entertaining, educational content that celebrates friendship, curiosity, and the joy of learning together.
+Create entertaining, educational content that celebrates friendship, curiosity, and the joy of learning together through authentic storytelling.
 
-### Unique Selling Points
-- Anthropomorphic accessories that children can relate to
-- School setting that mirrors kids' daily experiences
-- Gentle humor that teaches problem-solving
-- Visual storytelling accessible to all reading levels
+### Unique Value Proposition
+- Characters that children can relate to and see themselves in
+- Settings that mirror audience daily experiences
+- Gentle humor that teaches without lecturing
+- Storytelling accessible across different learning styles and abilities
+- Models for healthy relationship dynamics and conflict resolution
 
-### Voice and Tone
-- Warm and welcoming, but authentic to real relationships
-- Curious and encouraging, even during disagreements
-- Never condescending or preachy
-- Celebrates mistakes as learning opportunities
-- Shows that friends can disagree and still care about each other
-- Models healthy conflict resolution for young audiences
+### Voice and Tone Guidelines
+- Warm and welcoming while remaining authentic to real relationships
+- Curious and encouraging, especially during challenges and disagreements
+- Never condescending, preachy, or overly instructional
+- Celebrates mistakes and setbacks as natural parts of learning and growing
+- Demonstrates that friends can disagree and still care deeply about each other
+- Models age-appropriate conflict resolution and emotional intelligence
 
-## Future Development
+## Creative Development Principles
 
-### Potential Characters
-- Other school accessories and supplies
-- Seasonal clothing items
-- Classroom tools and materials
+### Story Development Approach
+- Stories should emerge from character needs and authentic situations
+- Educational content works best when it serves the story rather than driving it
+- Humor should come from character interactions and situations, not at anyone's expense
+- Conflicts should have meaningful stakes that matter to the characters
+- Resolutions should feel earned and demonstrate character growth
 
-### Story Expansion
-- Field trip adventures
-- Science experiment mishaps
-- Art class creativity
-- Music and performance episodes
-- Sports and physical activity stories
+### Future Development Framework
+- New characters should serve specific narrative purposes
+- Settings can expand to serve storytelling needs while maintaining series consistency
+- Story categories can evolve based on what works for characters and audience
+- Production processes should support creative flexibility while maintaining quality standards
 
 ---
 
-*This series bible serves as the creative foundation for all "Glove and Mitten" content, ensuring consistency in character voice, world rules, and educational values across all episodes and story arcs.*
+*This series bible serves as the creative foundation and guiding philosophy for all "Glove and Mitten" content, ensuring consistency in storytelling approach, character development, and educational values while allowing for creative growth and evolution.*
