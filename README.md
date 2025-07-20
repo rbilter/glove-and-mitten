@@ -1,6 +1,11 @@
 # Glove and Mitten
 
-A creative project for developing YouTube episodes featuring the characters Glove and Mitten in their adventures at Accessory Academy.
+A creative project for developing YouTube ep## Getting Started
+
+1. Read [Series Bible](series-bible.md) for character guidelines
+2. Explore [Project Structure](project-structure.md) for organization
+3. Use `make help` to see available automation commands
+4. Start creating episodes using saga templates in `stories/sagas/`s featuring the characters Glove and Mitten in their adventures at Accessory Academy.
 
 ## Project Overview
 
@@ -16,10 +21,18 @@ This repository contains all source materials, workflows, and production assets 
 2. **Run process-episode** workflow to generate YouTube metadata
 3. **Export final video** to `production/completed/videos/`
 
-### Process Episode Automation
+### Automation Commands
 ```bash
+# Using Makefile interface (recommended)
+make help                    # Show all available commands
+make process-episode EPISODE=path/to/episode.pptx
+make commit-local           # Commit changes and sync to Google Drive  
+make sync                   # Alias for commit-local
+make status                 # Show project status
+
+# Using natural language with assistant
 # Tell the assistant: "Process episode: [path-to-episode.pptx]"
-# Automatically generates PDF, extracts content, creates YouTube metadata
+# Tell the assistant: "Run commit-local workflow"
 ```
 
 ## Project Structure
@@ -29,27 +42,23 @@ This repository contains all source materials, workflows, and production assets 
 - **`characters/`** - Character definitions (main cast + saga-specific)
 - **`stories/`** - Episode ideas and completed story arcs
 - **`production/`** - YouTube workflow and metadata
+- **`workflows/`** - Automation documentation and processes
 
 ### 🎬 Current Episodes
 - **Episode 01: Lights - Tuff Daze** ✅ Complete with metadata
 
 ## Workflows
 
-### Episode Production
-1. **Creative** - PowerPoint episode creation
-2. **Automated** - PDF generation and metadata extraction  
-3. **Upload** - YouTube preparation with generated descriptions
+### Episode Creation Process
+1. **Develop Story** in `stories/ideas/` or use existing saga concepts
+2. **Create Episode** using PowerPoint templates in `stories/sagas/[saga]/`  
+3. **Process Episode** using automation workflow
+4. **Export Video** and save to `production/completed/videos/`
+5. **Upload to YouTube** using generated metadata
 
-### File Management
-- **Git** - Source files, metadata, documentation
-- **Google Drive** - Large video files and collaboration
-
-## Documentation
-
-- **[Project Structure](project-structure.md)** - Complete folder organization
-- **[Series Bible](series-bible.md)** - Character rules and world-building
-- **[Production Workflow](production/WORKFLOW.md)** - process-episode automation
-- **[Production Guide](production/README.md)** - YouTube workflow
+### Automation Workflows
+- **[Process Episode](workflows/process-episode.md)** - PowerPoint → PDF → YouTube metadata
+- **[Commit Local](workflows/commit-local.md)** - Git commit + Google Drive sync
 
 ## Stats
 

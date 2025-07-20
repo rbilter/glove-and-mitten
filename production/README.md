@@ -59,3 +59,8 @@ production/completed/metadata/episode-###-[name]/
 - **Work in progress**: In-progress folder (Google Drive only)
 - **Final videos**: Completed/videos folder (Google Drive only)
 - **Upload data**: Completed/metadata folder (Git)
+## Additional Documentation
+
+- **Automation**: See `workflows/process-episode.md` for episode processing
+- **Sync workflow**: See `workflows/commit-local.md` for Git+Google Drive sync
+- **Command interface**: Use `make help` to see all available automation commands
