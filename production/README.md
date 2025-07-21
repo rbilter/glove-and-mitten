@@ -16,7 +16,7 @@ The production folder uses a hybrid approach combining Git version control with 
 ## Workflow
 
 ### 1. Episode Creation
-1. Develop episode in `stories/sagas/[saga]/[story]/`
+1. Develop episode in `content/stories/sagas/[saga]/[story]/`
 2. Create PowerPoint episode using saga template
 3. Export/render video to `production/in-progress/`
 

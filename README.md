@@ -4,10 +4,10 @@ A creative project for developing YouTube episodes featuring the characters Glov
 
 ## Getting Started
 
-1. Read [Series Bible](series-bible.md) for character guidelines
-2. Explore [Project Structure](project-structure.md) for organization
+1. Read [Series Bible](content/series-bible.md) for character guidelines
+2. Explore [Project Structure](dev/docs/project-structure.md) for organization
 3. Use `make help` to see available automation commands
-4. Start creating episodes using saga templates in `stories/sagas/`
+4. Start creating episodes using saga templates in `content/stories/sagas/`
 
 ## Project Overview
 
@@ -19,7 +19,7 @@ This repository contains all source materials, workflows, and production assets 
 ## Quick Start
 
 ### Creating New Episodes
-1. **Create PowerPoint** using saga templates in `stories/sagas/[saga]/`
+1. **Create PowerPoint** using saga templates in `content/stories/sagas/[saga]/`
 2. **Run process-episode** workflow to generate YouTube metadata
 3. **Export final video** to `production/completed/videos/`
 
@@ -33,18 +33,19 @@ make sync                   # Alias for commit-local
 make status                 # Show project status
 
 # Direct workflow access
-workflows/process-episode.md     # Episode processing workflow
-workflows/commit-local.md        # Git + GitHub + Google Drive sync
+dev/workflows/process-episode.md     # Episode processing workflow
+dev/workflows/commit-local.md        # Git + GitHub + Google Drive sync
 ```
 
 ## Project Structure
 
 ### 📁 Core Directories
-- **`assets/`** - Images, audio, and templates organized by type
-- **`characters/`** - Character definitions (main cast + saga-specific)
-- **`stories/`** - Episode ideas and completed story arcs
-- **`production/`** - YouTube workflow and metadata
-- **`workflows/`** - Automation documentation and processes
+- **`content/characters/`** - Character definitions (main cast + saga-specific)  
+- **`content/stories/`** - Episode ideas and completed story arcs
+- **`content/assets/`** - Images, audio, and templates organized by type
+- **`production/`** - Final deliverables and YouTube metadata
+- **`dev/workflows/`** - Automation documentation and processes
+- **`dev/scripts/`** - TTS tools and automation scripts
 
 ### 🎬 Current Episodes
 - **Episode 01: Lights - Tuff Daze** ✅ Complete with metadata
@@ -53,7 +54,7 @@ workflows/commit-local.md        # Git + GitHub + Google Drive sync
 
 ### Episode Creation Process
 1. **Develop Story** in `stories/ideas/` or use existing saga concepts
-2. **Create Episode** using PowerPoint templates in `stories/sagas/[saga]/`  
+2. **Create Episode** using PowerPoint templates in `content/stories/sagas/[saga]/`  
 3. **Process Episode** using automation workflow
 4. **Export Video** and save to `production/completed/videos/`
 5. **Upload to YouTube** using generated metadata

@@ -16,9 +16,9 @@ from google.cloud import texttospeech
 import subprocess
 
 class TTSReader:
-    def __init__(self, config_file="scripts/tts-config.json", init_client=True):
+    def __init__(self, config_file="dev/config/tts-config.json", init_client=True):
         self.config = self.load_config(config_file)
-        self.cache_dir = Path("scripts/audio-cache")
+        self.cache_dir = Path("dev/cache/audio-cache")
         self.cache_dir.mkdir(exist_ok=True)
         
         # Initialize Google Cloud TTS client only if needed
@@ -73,8 +73,8 @@ class TTSReader:
         
         # Search patterns for character files
         search_patterns = [
-            f"characters/**/{char_name}.md",
-            f"characters/**/*{char_name}*.md",
+            f"content/characters/**/{char_name}.md",
+            f"content/characters/**/*{char_name}*.md",
             f"**/{char_name}.md",
             f"**/*{char_name}*.md"
         ]
@@ -103,8 +103,8 @@ class TTSReader:
             elif char_name in filename:
                 score += 50
             
-            # Prefer files in characters/ directory
-            if "characters/" in filepath:
+            # Prefer files in content/characters/ directory
+            if "content/characters/" in filepath:
                 score += 20
             
             # Prefer shorter paths (closer to root)
@@ -148,6 +148,28 @@ class TTSReader:
         
         return text.strip()
     
+    def split_text_into_chunks(self, text, max_bytes=4500):
+        """Split text into chunks that fit within TTS byte limit"""
+        chunks = []
+        sentences = re.split(r'(?<=[.!?])\s+', text)
+        
+        current_chunk = ""
+        for sentence in sentences:
+            # Check if adding this sentence would exceed the limit
+            test_chunk = current_chunk + (" " if current_chunk else "") + sentence
+            if len(test_chunk.encode('utf-8')) > max_bytes and current_chunk:
+                # Save current chunk and start new one
+                chunks.append(current_chunk.strip())
+                current_chunk = sentence
+            else:
+                current_chunk = test_chunk
+        
+        # Add the last chunk
+        if current_chunk.strip():
+            chunks.append(current_chunk.strip())
+            
+        return chunks
+    
     def get_cache_filename(self, text, voice_name):
         """Generate cache filename based on content and voice"""
         content_hash = hashlib.md5(f"{text}{voice_name}".encode()).hexdigest()[:12]
@@ -168,6 +190,42 @@ class TTSReader:
             print(f"🎵 Using cached audio: {cache_file.name}")
             return cache_file
         
+        # Check if text is too long and needs chunking
+        text_bytes = len(text.encode('utf-8'))
+        if text_bytes > 4500:  # Leave some safety margin
+            print(f"📊 Text too long ({text_bytes:,} bytes), splitting into chunks...")
+            chunks = self.split_text_into_chunks(text)
+            print(f"📊 Split into {len(chunks)} chunks")
+            
+            # Process each chunk and combine audio
+            chunk_files = []
+            for i, chunk in enumerate(chunks, 1):
+                print(f"🎙️  Processing chunk {i}/{len(chunks)} ({len(chunk.encode('utf-8')):,} bytes)...")
+                chunk_file = self.synthesize_single_chunk(chunk, f"{i:03d}")
+                if chunk_file:
+                    chunk_files.append(chunk_file)
+                else:
+                    print(f"❌ Failed to process chunk {i}")
+                    return None
+            
+            # Combine chunks into final audio file
+            if chunk_files:
+                combined_file = self.combine_audio_chunks(chunk_files, cache_file)
+                # Clean up temporary chunk files
+                for chunk_file in chunk_files:
+                    try:
+                        chunk_file.unlink()
+                    except:
+                        pass
+                return combined_file
+            else:
+                return None
+        else:
+            # Text is short enough, process normally
+            return self.synthesize_single_chunk(text)
+    
+    def synthesize_single_chunk(self, text, chunk_suffix=""):
+        """Synthesize a single text chunk"""
         # Prepare the request
         synthesis_input = texttospeech.SynthesisInput(text=text)
         
@@ -183,9 +241,12 @@ class TTSReader:
             pitch=self.config["audio_config"]["pitch"]
         )
         
-        # Make the request
-        print(f"🎙️  Synthesizing speech with {self.config['voice']['name']}...")
-        print(f"📊 Character count: {len(text):,}")
+        # Generate cache filename
+        if chunk_suffix:
+            content_hash = hashlib.md5(f"{text}{self.config['voice']['name']}".encode()).hexdigest()[:8]
+            cache_file = self.cache_dir / f"tts-chunk-{chunk_suffix}-{content_hash}.mp3"
+        else:
+            cache_file = self.get_cache_filename(text, self.config["voice"]["name"])
         
         try:
             response = self.client.synthesize_speech(
@@ -194,15 +255,55 @@ class TTSReader:
                 audio_config=audio_config
             )
             
-            # Save to cache
+            # Save audio
             with open(cache_file, "wb") as out:
                 out.write(response.audio_content)
             
-            print(f"✅ Audio generated: {cache_file.name}")
+            if not chunk_suffix:
+                print(f"✅ Audio generated: {cache_file.name}")
             return cache_file
             
         except Exception as e:
             print(f"❌ Error generating speech: {e}")
+            return None
+    
+    def combine_audio_chunks(self, chunk_files, output_file):
+        """Combine multiple audio chunks into a single file"""
+        try:
+            # Try to use ffmpeg for combining
+            if subprocess.run(['which', 'ffmpeg'], capture_output=True).returncode == 0:
+                print("🔗 Combining audio chunks with ffmpeg...")
+                
+                # Create input list for ffmpeg
+                input_list = self.cache_dir / "input_list.txt"
+                with open(input_list, "w") as f:
+                    for chunk_file in chunk_files:
+                        f.write(f"file '{chunk_file.absolute()}'\n")
+                
+                # Combine with ffmpeg
+                result = subprocess.run([
+                    'ffmpeg', '-f', 'concat', '-safe', '0', '-i', str(input_list),
+                    '-c', 'copy', str(output_file), '-y'
+                ], capture_output=True, text=True)
+                
+                input_list.unlink()  # Clean up
+                
+                if result.returncode == 0:
+                    print(f"✅ Combined audio saved: {output_file.name}")
+                    return output_file
+                else:
+                    print(f"❌ ffmpeg error: {result.stderr}")
+                    return None
+            else:
+                # Fallback: just use the first chunk
+                print("⚠️  ffmpeg not found, using first chunk only")
+                first_chunk = chunk_files[0]
+                import shutil
+                shutil.copy2(first_chunk, output_file)
+                return output_file
+                
+        except Exception as e:
+            print(f"❌ Error combining audio: {e}")
             return None
     
     def play_audio(self, audio_file):
@@ -212,19 +313,28 @@ class TTSReader:
             return False
         
         try:
-            # Try different audio players
-            players = ['paplay', 'aplay', 'mpg123', 'ffplay', 'mplayer']
+            # Try different audio players (prioritize MP3-compatible ones)
+            players = ['mpg123', 'ffplay', 'mplayer', 'paplay', 'aplay']
             
             for player in players:
                 if subprocess.run(['which', player], capture_output=True).returncode == 0:
                     print(f"🔊 Playing audio with {player}...")
-                    result = subprocess.run([player, str(audio_file)], 
-                                          capture_output=True, text=True)
+                    
+                    # Special handling for different players
+                    if player == 'ffplay':
+                        # ffplay needs -nodisp to run without video window
+                        cmd = [player, '-nodisp', '-autoexit', str(audio_file)]
+                    else:
+                        cmd = [player, str(audio_file)]
+                    
+                    result = subprocess.run(cmd, capture_output=True, text=True)
                     if result.returncode == 0:
                         return True
+                    else:
+                        print(f"⚠️  {player} failed: {result.stderr.strip()}")
                     
             print("❌ No suitable audio player found")
-            print("Install one of: paplay, aplay, mpg123, ffplay, or mplayer")
+            print("Install one of: mpg123, ffplay, mplayer, paplay, or aplay")
             return False
             
         except Exception as e:
@@ -246,7 +356,7 @@ class TTSReader:
     
     def list_available_characters(self):
         """List all available character files"""
-        char_files = glob.glob("characters/**/*.md", recursive=True)
+        char_files = glob.glob("content/characters/**/*.md", recursive=True)
         
         if not char_files:
             print("  No character files found")

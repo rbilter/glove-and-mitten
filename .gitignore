@@ -65,6 +65,13 @@ production/in-progress/
 *.swo
 *~
 
+# TTS (Text-to-Speech) generated audio cache
+# These can be regenerated and should not be committed
+dev/cache/audio-cache/
+**/tts-*.mp3
+**/tts-*.wav
+**/tts-chunk-*.mp3
+
 # Microsoft Office temporary files
 ~$*.docx
 ~$*.pptx
@@ -182,6 +189,7 @@ MANIFEST
 
 # Virtual environments
 venv/
+.venv/
 env/
 ENV/
 

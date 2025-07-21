@@ -70,7 +70,7 @@ Provides high-quality text-to-speech reading of character profiles and other mar
 - Caches results for performance
 
 ### Makefile Integration
-- `make read-profile PROFILE=characters/main/glove.md`
+- `make read-profile PROFILE=content/characters/main/glove.md`
 - `make read-all-profiles`
 - `make setup-tts` (runs one-time setup)
 
@@ -98,19 +98,19 @@ Edit `scripts/tts-config.json` to customize:
 ### Character Profile Reading
 ```bash
 # Read specific character
-make read-profile PROFILE=characters/main/glove.md
+make read-profile PROFILE=content/characters/main/glove.md
 
 # Read all profiles in sequence
 make read-all-profiles
 
 # Read with specific voice
-make read-profile PROFILE=characters/main/mitten.md VOICE=en-US-Neural2-F
+make read-profile PROFILE=content/characters/main/mitten.md VOICE=en-US-Neural2-F
 ```
 
 ### Assistant Commands
-- **"Read me the Glove profile"** → Reads `characters/main/glove.md`
+- **"Read me the Glove profile"** → Reads `content/characters/main/glove.md`
 - **"Read all character profiles"** → Reads all profiles in order
-- **"Read Principal Watch profile"** → Reads `characters/sagas/school-daze/principal-watch.md`
+- **"Read Principal Watch profile"** → Reads `content/characters/sagas/school-daze/principal-watch.md`
 
 ## File Structure
 ```

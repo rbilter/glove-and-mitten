@@ -8,7 +8,7 @@ The `process-episode` workflow automatically generates YouTube metadata from com
 
 **Example:**
 ```bash
-make process-episode EPISODE=stories/sagas/school-daze/stories/lights/tuff-daze/01-lights-tuff-daze-episode.pptx
+make process-episode EPISODE=content/stories/sagas/school-daze/stories/lights/tuff-daze/01-lights-tuff-daze-episode.pptx
 ```
 
 **Assistant Integration:**
@@ -29,7 +29,7 @@ make process-episode EPISODE=stories/sagas/school-daze/stories/lights/tuff-daze/
 
 ### Phase 1: Episode Creation
 1. **Create Episode PowerPoint**
-   - Use saga-specific template from `stories/sagas/[saga]/episode-template.pptx`
+   - Use saga-specific template from `content/stories/sagas/[saga]/episode-template.pptx`
    - Save as `##-[story]-[episode].pptx` in story folder
    - Include all dialog, scenes, and visual content
 
@@ -73,7 +73,7 @@ make process-episode EPISODE=stories/sagas/school-daze/stories/lights/tuff-daze/
 
 ## File Organization Example
 ```
-stories/sagas/school-daze/stories/lights/tuff-daze/
+content/stories/sagas/school-daze/stories/lights/tuff-daze/
 ├── 01-lights-tuff-daze-episode.pptx    # Source
 ├── 01-lights-tuff-daze-episode.pdf     # For description generation
 ├── scene-one.mp3                       # Audio assets
@@ -94,12 +94,12 @@ production/completed/metadata/01-lights-tuff-daze/
 
 ### Generate PDF from PowerPoint
 ```bash
-libreoffice --headless --convert-to pdf --outdir stories/sagas/[saga]/stories/[story]/[episode]/ stories/sagas/[saga]/stories/[story]/[episode]/##-[story]-[episode].pptx
+libreoffice --headless --convert-to pdf --outdir content/stories/sagas/[saga]/stories/[story]/[episode]/ content/stories/sagas/[saga]/stories/[story]/[episode]/##-[story]-[episode].pptx
 ```
 
 ### Extract Episode Content
 ```bash
-pdftotext stories/sagas/[saga]/stories/[story]/[episode]/##-[story]-[episode].pdf -
+pdftotext content/stories/sagas/[saga]/stories/[story]/[episode]/##-[story]-[episode].pdf -
 ```
 
 ### Create Metadata Folder

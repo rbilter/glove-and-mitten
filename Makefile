@@ -22,10 +22,10 @@ help:
 	@echo "  make help                            - Show this help message"
 	@echo ""
 	@echo "Examples:"
-	@echo "  make process-episode EPISODE=stories/sagas/school-daze/stories/lights/tuff-daze/01-lights-tuff-daze-episode.pptx"
+	@echo "  make process-episode EPISODE=content/stories/sagas/school-daze/stories/lights/tuff-daze/01-lights-tuff-daze-episode.pptx"
 	@echo "  make read-profile CHAR=glove         - Read Glove's profile"
 	@echo "  make read-profile CHAR=beaker        - Read Instructor Beaker's profile"
-	@echo "  make read-profile FILE=characters/main/glove.md"
+	@echo "  make read-profile FILE=content/characters/main/glove.md"
 	@echo "  make commit-local"
 	@echo ""
 	@echo "For detailed documentation, see workflows/ directory"
@@ -84,36 +84,36 @@ read-profile:
 	@if [ -n "$(CHAR)" ]; then \
 		echo "🎙️  Reading $(CHAR)'s profile..."; \
 		if [ -n "$(TEST)" ]; then \
-			./scripts/read-profile.py "$(CHAR)" --test-mode; \
+			./dev/scripts/read-profile.py "$(CHAR)" --test-mode; \
 		else \
-			./scripts/read-profile.py "$(CHAR)"; \
+			./dev/scripts/read-profile.py "$(CHAR)"; \
 		fi; \
 	elif [ -n "$(FILE)" ]; then \
 		echo "🎙️  Reading file: $(FILE)"; \
 		if [ -n "$(TEST)" ]; then \
-			./scripts/read-profile.py "$(FILE)" --test-mode; \
+			./dev/scripts/read-profile.py "$(FILE)" --test-mode; \
 		else \
-			./scripts/read-profile.py "$(FILE)"; \
+			./dev/scripts/read-profile.py "$(FILE)"; \
 		fi; \
 	else \
 		echo "❌ Please specify either CHAR=<name> or FILE=<path>"; \
 		echo "Examples:"; \
 		echo "  make read-profile CHAR=glove"; \
 		echo "  make read-profile CHAR=glove TEST=1  (test mode)"; \
-		echo "  make read-profile FILE=characters/main/glove.md"; \
+		echo "  make read-profile FILE=content/characters/main/glove.md"; \
 		echo ""; \
 		echo "Available characters:"; \
-		./scripts/read-profile.py --list-characters; \
+		./dev/scripts/read-profile.py --list-characters; \
 		exit 1; \
 	fi
 
 list-voices:
 	@echo "🎙️  Listing available TTS voices..."
-	@./scripts/read-profile.py --list-voices
+	@./dev/scripts/read-profile.py --list-voices
 
 list-characters:
 	@echo "📚 Available character profiles:"
-	@./scripts/read-profile.py --list-characters
+	@./dev/scripts/read-profile.py --list-characters
 	@echo "Working directory status:"
 	@git status --short
 	@echo ""
