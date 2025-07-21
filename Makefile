@@ -1,7 +1,7 @@
 # Glove and Mitten Project Makefile
 # Provides simple interface to workflow automation
 
-.PHONY: help process-episode sync commit-local clean status
+.PHONY: help process-episode sync commit-local clean status read-profile list-voices list-characters
 
 # Default target
 help:
@@ -12,12 +12,20 @@ help:
 	@echo "  make process-episode EPISODE=<path>  - Generate metadata from PowerPoint episode"
 	@echo "  make commit-local                    - Commit local changes and sync to Google Drive"
 	@echo "  make sync                            - Alias for commit-local"
+	@echo "  make read-profile CHAR=<name>        - Read character profile by name (e.g. glove, mitten, beaker)"
+	@echo "  make read-profile FILE=<path>        - Read any markdown file by path"
+	@echo "  make read-profile CHAR=<name> TEST=1 - Test mode (no TTS, just show processed text)"
+	@echo "  make list-voices                     - List available TTS voices"
+	@echo "  make list-characters                 - List available character profiles"
 	@echo "  make clean                           - Clean generated files"
 	@echo "  make status                          - Show project status"
 	@echo "  make help                            - Show this help message"
 	@echo ""
 	@echo "Examples:"
 	@echo "  make process-episode EPISODE=stories/sagas/school-daze/stories/lights/tuff-daze/01-lights-tuff-daze-episode.pptx"
+	@echo "  make read-profile CHAR=glove         - Read Glove's profile"
+	@echo "  make read-profile CHAR=beaker        - Read Instructor Beaker's profile"
+	@echo "  make read-profile FILE=characters/main/glove.md"
 	@echo "  make commit-local"
 	@echo ""
 	@echo "For detailed documentation, see workflows/ directory"
@@ -70,6 +78,42 @@ status:
 	@echo "================"
 	@git log --oneline -5
 	@echo ""
+
+# Text-to-Speech Commands
+read-profile:
+	@if [ -n "$(CHAR)" ]; then \
+		echo "🎙️  Reading $(CHAR)'s profile..."; \
+		if [ -n "$(TEST)" ]; then \
+			./scripts/read-profile.py "$(CHAR)" --test-mode; \
+		else \
+			./scripts/read-profile.py "$(CHAR)"; \
+		fi; \
+	elif [ -n "$(FILE)" ]; then \
+		echo "🎙️  Reading file: $(FILE)"; \
+		if [ -n "$(TEST)" ]; then \
+			./scripts/read-profile.py "$(FILE)" --test-mode; \
+		else \
+			./scripts/read-profile.py "$(FILE)"; \
+		fi; \
+	else \
+		echo "❌ Please specify either CHAR=<name> or FILE=<path>"; \
+		echo "Examples:"; \
+		echo "  make read-profile CHAR=glove"; \
+		echo "  make read-profile CHAR=glove TEST=1  (test mode)"; \
+		echo "  make read-profile FILE=characters/main/glove.md"; \
+		echo ""; \
+		echo "Available characters:"; \
+		./scripts/read-profile.py --list-characters; \
+		exit 1; \
+	fi
+
+list-voices:
+	@echo "🎙️  Listing available TTS voices..."
+	@./scripts/read-profile.py --list-voices
+
+list-characters:
+	@echo "📚 Available character profiles:"
+	@./scripts/read-profile.py --list-characters
 	@echo "Working directory status:"
 	@git status --short
 	@echo ""

@@ -1,0 +1,16 @@
+{
+  "voice": {
+    "language_code": "en-US",
+    "name": "en-US-Neural2-D",
+    "ssml_gender": "MALE"
+  },
+  "audio_config": {
+    "audio_encoding": "MP3",
+    "speaking_rate": 1.0,
+    "pitch": 0.0
+  },
+  "playback": {
+    "auto_play": true,
+    "save_audio": true
+  }
+}
