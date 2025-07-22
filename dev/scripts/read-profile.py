@@ -47,17 +47,23 @@ class TTSReader:
             },
             "playback": {
                 "auto_play": True,
-                "save_audio": True
+                "save_audio": True,
+                "auto_open_editor": True
             }
         }
         
         try:
             with open(config_file, 'r') as f:
                 config = json.load(f)
-                # Merge with defaults
+                # Merge with defaults (deep merge for nested dictionaries)
                 for key in default_config:
                     if key not in config:
                         config[key] = default_config[key]
+                    elif isinstance(default_config[key], dict) and isinstance(config.get(key), dict):
+                        # Merge nested dictionaries
+                        for subkey in default_config[key]:
+                            if subkey not in config[key]:
+                                config[key][subkey] = default_config[key][subkey]
                 return config
         except FileNotFoundError:
             print(f"📁 Creating default config: {config_file}")
@@ -307,18 +313,88 @@ class TTSReader:
             return None
     
     def play_audio(self, audio_file):
-        """Play audio file using system audio player"""
+        """Play audio file using MPV with interactive controls"""
         if not audio_file or not audio_file.exists():
             print("❌ No audio file to play")
             return False
         
         try:
-            # Try different audio players (prioritize MP3-compatible ones)
+            # Check if mpv is available (preferred for interactive controls)
+            if subprocess.run(['which', 'mpv'], capture_output=True).returncode == 0:
+                return self._play_with_mpv(audio_file)
+            else:
+                # Fallback to blocking players
+                return self._play_with_fallback(audio_file)
+                
+        except Exception as e:
+            print(f"❌ Error playing audio: {e}")
+            return False
+    
+    def _play_with_mpv(self, audio_file):
+        """Play audio with MPV in interactive mode"""
+        try:
+            print("🎵 Launching MPV audio player in new terminal...")
+            print("📱 Controls: SPACE=pause/play, LEFT/RIGHT=seek, Q=quit, +/-=volume")
+            
+            # Try to launch MPV in a new terminal window for better visibility
+            terminal_commands = [
+                # GNOME Terminal
+                ['gnome-terminal', '--', 'mpv', '--no-video', '--keep-open', '--term-osd-bar', '--osd-level=1', '--title=Audio Player', str(audio_file)],
+                # KDE Konsole
+                ['konsole', '-e', 'mpv', '--no-video', '--keep-open', '--term-osd-bar', '--osd-level=1', '--title=Audio Player', str(audio_file)],
+                # XFCE Terminal
+                ['xfce4-terminal', '-e', f'mpv --no-video --keep-open --term-osd-bar --osd-level=1 --title="Audio Player" "{audio_file}"'],
+                # X Terminal
+                ['xterm', '-e', f'mpv --no-video --keep-open --term-osd-bar --osd-level=1 --title="Audio Player" "{audio_file}"'],
+            ]
+            
+            # Try each terminal in order
+            for cmd in terminal_commands:
+                try:
+                    if subprocess.run(['which', cmd[0]], capture_output=True).returncode == 0:
+                        print(f"🖥️  Opening MPV in {cmd[0]}...")
+                        process = subprocess.Popen(cmd)
+                        print(f"🔊 Audio player launched in new terminal window (PID: {process.pid})")
+                        print("🎛️  Look for the new terminal window to control playback")
+                        print("💡 If you don't see it, check your taskbar or alt-tab")
+                        return True
+                except:
+                    continue
+            
+            # Fallback: try running MPV directly (background mode)
+            print("⚠️  No terminal emulator found, falling back to background mode")
+            cmd = [
+                'mpv',
+                '--no-video',           # Audio only
+                '--keep-open',          # Don't exit after playing
+                '--term-osd-bar',       # Show progress bar
+                '--osd-level=1',        # Show basic OSD
+                '--title=' + f"Audio: {audio_file.name}",  # Set window title
+                str(audio_file)
+            ]
+            
+            # Start MPV in the background (non-blocking)
+            process = subprocess.Popen(cmd)
+            
+            print(f"🔊 Audio playing in background (PID: {process.pid})")
+            print(f"🎛️  To stop this audio: kill {process.pid}")
+            print("💡 Try: pkill mpv (to stop all audio)")
+            
+            return True
+            
+        except Exception as e:
+            print(f"❌ MPV failed: {e}")
+            return self._play_with_fallback(audio_file)
+    
+    def _play_with_fallback(self, audio_file):
+        """Fallback to blocking audio players"""
+        try:
+            # Try different audio players (blocking mode)
             players = ['mpg123', 'ffplay', 'mplayer', 'paplay', 'aplay']
             
             for player in players:
                 if subprocess.run(['which', player], capture_output=True).returncode == 0:
-                    print(f"🔊 Playing audio with {player}...")
+                    print(f"🔊 Playing audio with {player} (blocking mode)...")
                     
                     # Special handling for different players
                     if player == 'ffplay':
@@ -334,11 +410,43 @@ class TTSReader:
                         print(f"⚠️  {player} failed: {result.stderr.strip()}")
                     
             print("❌ No suitable audio player found")
-            print("Install one of: mpg123, ffplay, mplayer, paplay, or aplay")
+            print("Install MPV for interactive controls or one of: mpg123, ffplay, mplayer, paplay, aplay")
             return False
             
         except Exception as e:
-            print(f"❌ Error playing audio: {e}")
+            print(f"❌ Error in fallback audio: {e}")
+            return False
+    
+    def open_in_editor(self, file_path):
+        """Open file in VS Code editor"""
+        try:
+            file_path = Path(file_path).absolute()
+            
+            # Check if VS Code is available
+            vscode_commands = ['code', 'code-insiders']
+            
+            for cmd in vscode_commands:
+                if subprocess.run(['which', cmd], capture_output=True).returncode == 0:
+                    print(f"📝 Opening file in VS Code: {file_path.name}")
+                    
+                    # Open file in VS Code (non-blocking)
+                    process = subprocess.Popen([cmd, str(file_path)])
+                    
+                    print("💡 File opened in editor - you can follow along with the audio")
+                    return True
+            
+            # Fallback: try xdg-open (Linux default file handler)
+            if subprocess.run(['which', 'xdg-open'], capture_output=True).returncode == 0:
+                print(f"📝 Opening file with default editor: {file_path.name}")
+                subprocess.Popen(['xdg-open', str(file_path)])
+                return True
+                
+            print("⚠️  No editor found (VS Code recommended)")
+            print("   Install VS Code: https://code.visualstudio.com/")
+            return False
+            
+        except Exception as e:
+            print(f"❌ Error opening file in editor: {e}")
             return False
     
     def read_character(self, character_name, voice_name=None):
@@ -375,6 +483,10 @@ class TTSReader:
             return False
         
         print(f"📖 Reading: {file_path}")
+        
+        # Open file in editor if configured
+        if self.config["playback"].get("auto_open_editor", True):
+            self.open_in_editor(file_path)
         
         # Read and clean the file
         try:
@@ -419,6 +531,7 @@ def main():
     parser.add_argument("input", nargs='?', help="Character name or markdown file path to read")
     parser.add_argument("--voice", help="Voice name (e.g., en-US-Neural2-D)")
     parser.add_argument("--no-play", action="store_true", help="Don't auto-play audio")
+    parser.add_argument("--no-editor", action="store_true", help="Don't auto-open file in editor")
     parser.add_argument("--list-voices", action="store_true", help="List available voices")
     parser.add_argument("--test-mode", action="store_true", help="Test mode - process text but don't use TTS")
     parser.add_argument("--list-characters", action="store_true", help="List available characters")
@@ -462,6 +575,10 @@ def main():
     # Override auto-play if requested
     if args.no_play:
         tts.config["playback"]["auto_play"] = False
+    
+    # Override auto-editor if requested
+    if args.no_editor:
+        tts.config["playback"]["auto_open_editor"] = False
     
     # Determine if input is a file path or character name
     input_path = Path(args.input)
