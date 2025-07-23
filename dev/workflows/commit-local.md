@@ -39,14 +39,20 @@ The `.rclone-filter` file controls what gets synced to Google Drive:
    ```
 
 2. **Show Changes Summary**
-   - New files created
-   - Modified files
-   - Deleted files
+   - New files created (untracked files marked with ??)
+   - Modified files (marked with M)
+   - Deleted files (marked with D)
+   - Staged files (marked with A)
+
+3. **Verify All File Types**
+   - ✅ **Staged changes**: Already ready for commit
+   - ✅ **Unstaged changes**: Modified tracked files
+   - ✅ **Untracked files**: New files not yet in git (IMPORTANT: Don't miss these!)
 
 ### Phase 2: Git Operations
-3. **Stage All Changes**
+4. **Stage All Changes Including Untracked Files**
    ```bash
-   git add -A
+   git add -A  # Includes untracked files, modifications, and deletions
    ```
 
 4. **Generate Smart Commit Message**
