@@ -18,12 +18,9 @@ This directory tracks conversation summaries using a delta-based approach to mai
 - **Content**: Full context including completed tasks, system status, file structure, technical decisions
 
 ### Delta Files  
-- **Format**: `YYYY-MM-DD-session-delta.md`
-- **Purpose**: Incremental changes since last baseline
-- **Created**: Automatically each day by cron job
-- **Content**: Session activity, file changes, decisions, problems solved, next steps
-
-## 📝 What Gets Tracked
+- `YYYY-MM-DD-session.md` - Incremental changes since last baseline
+- Created for each development session
+- Contains: new tasks, file changes, decisions, problems solved, next steps## 📝 What Gets Tracked
 
 ### Baseline Summaries Include:
 - ✅ **Task Completion**: Full status and outcomes for all completed tasks

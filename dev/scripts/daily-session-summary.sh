@@ -8,7 +8,7 @@ set -e
 REPO_DIR="/home/rbilter/work/repos/glove-and-mitten"
 SUMMARY_DIR="$REPO_DIR/dev/logs/conversation-summaries"
 TODAY=$(date +%Y-%m-%d)
-DELTA_FILE="$SUMMARY_DIR/$TODAY-session-delta.md"
+DELTA_FILE="$SUMMARY_DIR/$TODAY-session.md"
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -92,7 +92,7 @@ create_active_summary() {
     log "${GREEN}📝 Creating active session summary...${NC}"
     
     cat > "$DELTA_FILE" << EOF
-# Session Delta - $TODAY
+# Session Summary - $TODAY
 *Changes and additions since baseline session*
 
 ## 📅 Session Info
@@ -137,7 +137,7 @@ create_no_session_summary() {
     log "${YELLOW}📝 Creating no-session summary...${NC}"
     
     cat > "$DELTA_FILE" << EOF
-# Session Delta - $TODAY
+# Session Summary - $TODAY
 *No development session detected*
 
 ## 📅 Session Info
