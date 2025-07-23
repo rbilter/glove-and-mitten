@@ -47,9 +47,11 @@
 - **/tts-*.wav
 - **/tts-chunk-*.mp3
 
-# Log files
+# Log files (exclude general logs but preserve conversation summaries)
 - *.log
-- logs/
+- /logs/
++ dev/logs/conversation-summaries/
+- dev/logs/*.log
 
 # OS generated files
 - .DS_Store
