@@ -200,6 +200,11 @@ ENV/
 logs/
 *.debug
 
+# Exception: Keep conversation summaries for session continuity
+!dev/logs/
+!dev/logs/conversation-summaries/
+!dev/logs/conversation-summaries/*.md
+
 # =============================================================================
 # SECURITY & CONFIGURATION
 # =============================================================================
