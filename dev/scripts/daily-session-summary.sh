@@ -132,38 +132,6 @@ $(get_git_summary)
 EOF
 }
 
-# Function to create no-session summary
-create_no_session_summary() {
-    log "${YELLOW}📝 Creating no-session summary...${NC}"
-    
-    cat > "$DELTA_FILE" << EOF
-# Session Summary - $TODAY
-*No development session detected*
-
-## 📅 Session Info
-- **Date**: $TODAY
-- **Previous Baseline**: $(ls -t "$SUMMARY_DIR"/*baseline.md 2>/dev/null | head -1 | xargs basename 2>/dev/null || echo "No baseline found")
-- **Session Type**: No Session
-- **Auto-Generated**: $(date '+%Y-%m-%d %H:%M:%S')
-
-## 🚫 No Activity Detected
-- No git commits made today
-- No uncommitted changes detected
-- No development session occurred
-
-## 📊 Repository Status
-- **Last Commit**: $(git log -1 --format="%h - %s (%cr)" 2>/dev/null || echo "No commits found")
-- **Branch**: $(git branch --show-current 2>/dev/null || echo "Unknown")
-- **Status**: $(git status --porcelain 2>/dev/null | wc -l) uncommitted changes
-
-## ⏭️ Next Session
-- Resume work when ready
-- Check recent deltas for context
-
----
-*Auto-generated on $TODAY at $(date '+%H:%M:%S'). No development activity detected.*
-EOF
-}
 
 # Function to update existing delta file
 update_existing_summary() {
@@ -212,15 +180,17 @@ main() {
     if detect_activity; then
         log "${GREEN}🎯 Development activity detected${NC}"
         create_active_summary
+        log "${GREEN}✅ Summary created: $DELTA_FILE${NC}"
+        # Show summary stats
+        log "📊 Summary contains $(wc -l < "$DELTA_FILE") lines"
     else
         log "${YELLOW}😴 No development activity detected${NC}"
-        create_no_session_summary
+        # Heartbeat log for automation
+        HEARTBEAT_LOG="$REPO_DIR/dev/logs/automation-heartbeat.log"
+        mkdir -p "$REPO_DIR/dev/logs"
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] No development activity detected (heartbeat)" >> "$HEARTBEAT_LOG"
+        log "${GREEN}✅ Heartbeat logged: $HEARTBEAT_LOG${NC}"
     fi
-    
-    log "${GREEN}✅ Summary created: $DELTA_FILE${NC}"
-    
-    # Show summary stats
-    log "📊 Summary contains $(wc -l < "$DELTA_FILE") lines"
 }
 
 # Run main function
