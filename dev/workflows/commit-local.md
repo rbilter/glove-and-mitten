@@ -65,18 +65,28 @@ The `.rclone-filter` file controls what gets synced to Google Drive:
    git commit -m "[Generated message based on changes]"
    ```
 
-6. **Push to Remote Repository**
+6. **Verify Commit Success**
+   ```bash
+   git log -1 --oneline  # Confirm commit was created
+   ```
+
+7. **Push to Remote Repository**
    ```bash
    git push origin main
    ```
 
+8. **Verify Push Success**
+   ```bash
+   git status -b  # Confirm local branch is up to date with remote
+   ```
+
 ### Phase 3: Google Drive Sync
-7. **Sync to Google Drive**
+9. **Sync to Google Drive**
    ```bash
    rclone sync . gdrive:glove-and-mitten --filter-from .rclone-filter --progress
    ```
 
-8. **Verify Sync**
+10. **Verify Sync**
    ```bash
    rclone check . gdrive:glove-and-mitten --filter-from .rclone-filter
    ```

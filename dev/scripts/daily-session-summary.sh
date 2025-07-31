@@ -156,6 +156,9 @@ update_existing_summary() {
     # Replace original file
     mv "$temp_file" "$DELTA_FILE"
     
+    # Clean up backup file after successful update
+    rm -f "$DELTA_FILE.backup"
+    
     log "${GREEN}✅ Updated existing delta file with latest git activity${NC}"
 }
 
