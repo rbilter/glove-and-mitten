@@ -87,6 +87,34 @@ get_git_summary() {
     echo ""
 }
 
+# Function to get chat conversations summary
+get_chat_summary() {
+    local chat_parser="$REPO_DIR/dev/scripts/parse-chat-sessions.py"
+    
+    # Check if chat parser exists and is executable
+    if [ ! -x "$chat_parser" ]; then
+        echo "## 💬 Chat Conversations"
+        echo ""
+        echo "*Chat parser not available or not executable*"
+        echo ""
+        return
+    fi
+    
+    # Try to parse today's chat sessions
+    local chat_content
+    chat_content=$(python3 "$chat_parser" --date "$TODAY" 2>/dev/null)
+    
+    if [ $? -eq 0 ] && [ -n "$chat_content" ]; then
+        echo "$chat_content"
+        echo ""
+    else
+        echo "## 💬 Chat Conversations"
+        echo ""
+        echo "*No chat conversations found for today*"
+        echo ""
+    fi
+}
+
 # Function to create active session summary
 create_active_summary() {
     log "${GREEN}📝 Creating active session summary...${NC}"
@@ -102,6 +130,8 @@ create_active_summary() {
 - **Auto-Generated**: $(date '+%Y-%m-%d %H:%M:%S')
 
 $(get_git_summary)
+
+$(get_chat_summary)
 
 ## 🔄 Session Activity
 *This summary was auto-generated. Manual updates can be added below.*
@@ -150,7 +180,10 @@ update_existing_summary() {
     # Add updated git activity
     get_git_summary >> "$temp_file"
     
-    # Add everything after git activity section (if it exists)
+    # Add updated chat summary
+    get_chat_summary >> "$temp_file"
+    
+    # Add everything after chat activity section (if it exists)
     sed -n '/## 🔄 Session Activity/,$p' "$DELTA_FILE" >> "$temp_file"
     
     # Replace original file
