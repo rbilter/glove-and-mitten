@@ -61,8 +61,23 @@ The `.rclone-filter` file controls what gets synced to Google Drive:
    - Include date and change summary
 
 5. **Commit Changes**
+   
+   **Option A: Single-line message (recommended for automation)**
    ```bash
    git commit -m "[Generated message based on changes]"
+   ```
+   
+   **Option B: Multi-line message (use multiple -m flags)**
+   ```bash
+   git commit -m "Summary of changes" -m "- Detailed point 1" -m "- Detailed point 2"
+   ```
+   
+   **⚠️ Important:** Avoid embedded newlines in `-m` strings as they can cause git to hang:
+   ```bash
+   # DON'T DO THIS (hangs):
+   git commit -m "Title
+   
+   Body with details"
    ```
 
 6. **Verify Commit Success**
