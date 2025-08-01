@@ -31,10 +31,14 @@ make process-episode EPISODE=path/to/episode.pptx
 make commit-local           # Commit changes and sync to Google Drive  
 make sync                   # Alias for commit-local
 make status                 # Show project status
+make read-profile CHAR=character_name  # TTS character profile reading
+make list-characters        # Show available characters for TTS
+make list-voices           # Show available TTS voices
 
 # Direct workflow access
 dev/workflows/process-episode.md     # Episode processing workflow
 dev/workflows/commit-local.md        # Git + GitHub + Google Drive sync
+dev/workflows/text-to-speech.md     # TTS character profile reading
 ```
 
 ## Project Structure
@@ -45,7 +49,8 @@ dev/workflows/commit-local.md        # Git + GitHub + Google Drive sync
 - **`content/assets/`** - Images, audio, and templates organized by type
 - **`production/`** - Final deliverables and YouTube metadata
 - **`dev/workflows/`** - Automation documentation and processes
-- **`dev/scripts/`** - TTS tools and automation scripts
+- **`dev/scripts/`** - TTS tools, chat automation, and workflow scripts
+- **`dev/logs/`** - Automated conversation summaries and development tracking
 
 ### 🎬 Current Episodes
 - **Episode 01: Lights - Tuff Daze** ✅ Complete with metadata
@@ -60,23 +65,29 @@ dev/workflows/commit-local.md        # Git + GitHub + Google Drive sync
 5. **Upload to YouTube** using generated metadata
 
 ### Automation Workflows
-- **[Process Episode](workflows/process-episode.md)** - PowerPoint → PDF → YouTube metadata
-- **[Commit Local](workflows/commit-local.md)** - Git + GitHub + Google Drive sync
+- **[Process Episode](dev/workflows/process-episode.md)** - PowerPoint → PDF → YouTube metadata
+- **[Commit Local](dev/workflows/commit-local.md)** - Git + GitHub + Google Drive sync
+- **[Text-to-Speech](dev/workflows/text-to-speech.md)** - Character profile audio reading
+- **[Chat Automation](dev/logs/conversation-summaries/README.md)** - Automated development session tracking
 
 ## Stats
 
-- **170 directories** with organized creative assets
-- **234 files** including episodes, characters, documentation, and media assets
-- **10 markdown files** for comprehensive documentation
+- **48 directories** with organized creative and development assets
+- **98 project files** including episodes, characters, documentation, and automation scripts
+- **28 markdown files** for comprehensive documentation and session tracking
 - **Hybrid workflow** combining Git version control with Google Drive cloud sync
 - **Automated metadata** generation from actual episode content
 - **GitHub integration** with SSH remote for collaboration
+- **Chat automation** with VS Code integration for development session tracking
+- **TTS system** for character profile audio generation using Google Cloud
 
 ## Development Workflow
 
 1. **Create Episodes** using PowerPoint templates in saga directories
 2. **Process Episodes** with `make process-episode` to generate metadata
-3. **Commit Changes** with `make commit-local` for Git + Google Drive sync
-4. **Collaborate** via GitHub repository with automatic cloud backup
+3. **Use TTS System** with `make read-profile` for character development
+4. **Track Progress** via automated conversation summaries and session logs
+5. **Commit Changes** with `make commit-local` for Git + Google Drive sync
+6. **Collaborate** via GitHub repository with automatic cloud backup
 
 Ready to bring Glove and Mitten's adventures to life! 🎬

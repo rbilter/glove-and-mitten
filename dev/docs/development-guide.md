@@ -8,9 +8,24 @@ This guide covers how to use the development tools and workflows in the Glove an
 
 - **Google Cloud CLI** with Text-to-Speech API enabled
 - **Python 3.12+** with required packages
-- **ffmpeg** for audio processing
+- **ffmpe### Planned Features
+
+1. **Interactive Audio Player**: Pause, play, rewind, fast-forward controls
+2. **Editor Integration**: Auto-open character files during TTS playback
+3. **Batch Processing**: Multiple character reading sessions
+4. **Voice Customization**: Per-character voice selection
+5. **Enhanced Chat Analysis**: Deeper insights from conversation patterns
+
+### Recently Implemented
+
+1. ✅ **Chat Automation**: VS Code session tracking with daily summaries
+2. ✅ **Development Tracking**: Historical context preservation across sessions
+3. ✅ **Timezone Correction**: Accurate local time display in summaries
+4. ✅ **Git Integration**: Automated commit-local workflow with Google Drive sync audio processing
 - **mpg123** for audio playback
 - **make** for workflow automation
+- **VS Code** for chat automation integration
+- **rclone** for Google Drive synchronization
 
 ## Text-to-Speech (TTS) System
 
@@ -90,6 +105,50 @@ TTS settings are configured in `dev/config/tts-config.json`:
 4. **Combining**: Multiple chunks are combined using ffmpeg
 5. **Playback**: Final audio is played using mpg123
 
+## Chat Automation System
+
+### Overview
+
+The project includes automated VS Code chat session tracking that captures development conversations and generates daily summaries. This system provides context preservation across multi-day development sessions.
+
+### How It Works
+
+1. **VS Code Integration**: Monitors VS Code chat sessions stored in workspace storage
+2. **Daily Processing**: Automatically runs at 11:50 PM to analyze the day's conversations
+3. **Smart Filtering**: Only includes conversations from the target date using individual message timestamps
+4. **Summary Generation**: Creates structured markdown summaries with insights and context
+5. **Historical Tracking**: Maintains complete development history in `dev/logs/conversation-summaries/`
+
+### Features
+
+- **Automatic Operation**: No manual intervention required
+- **Accurate Dating**: Uses individual message timestamps, not session metadata
+- **Local Timezone**: Displays times in local timezone (EDT) instead of UTC
+- **Context Preservation**: Tracks decisions, problems solved, and next steps
+- **Git Integration**: All summaries are version controlled and synced to Google Drive
+
+### Usage
+
+The system runs automatically, but you can:
+
+```bash
+# Check system status
+./dev/scripts/setup-daily-summaries.sh status
+
+# Test summary generation
+./dev/scripts/setup-daily-summaries.sh test
+
+# View conversation summaries
+ls dev/logs/conversation-summaries/
+```
+
+### Benefits
+
+- **Never lose context** between development sessions
+- **Track technical decisions** and problem-solving approaches
+- **Document project evolution** over time
+- **Enable easy handoffs** between team members or AI assistants
+
 ## Makefile Commands
 
 ### Core Workflows
@@ -98,15 +157,22 @@ TTS settings are configured in `dev/config/tts-config.json`:
 # TTS System
 make read-profile CHAR=character_name    # Generate and play character audio
 make read-profile CHAR=character TEST=1  # Quick test mode
+make list-characters                     # List available character profiles
+make list-voices                        # List available TTS voices
 
-# Development
+# Project Management
+make commit-local                        # Git commit + GitHub + Google Drive sync
+make sync                               # Alias for commit-local
 make help                               # Show all available commands
 make clean                             # Clean up temporary files
+make status                            # Show project status
 
-# Future workflows (as implemented)
+# Episode Production
 make process-episode EPISODE=name      # Process episode for production
-make sync-drive                        # Sync with Google Drive
-make commit-local                      # Git commit + drive sync
+
+# Development Tracking (automated)
+# Chat sessions are automatically captured and summarized daily
+# See dev/logs/conversation-summaries/ for session history
 ```
 
 ### Makefile Structure
@@ -121,12 +187,19 @@ The Makefile provides a simple interface to complex workflows:
 ```
 dev/
 ├── scripts/                    # Automation scripts
-│   └── read-profile.py        # TTS character reading script
+│   ├── read-profile.py        # TTS character reading script
+│   ├── parse-chat-sessions.py # VS Code chat session extraction
+│   ├── daily-session-summary.sh # Automated development tracking
+│   └── setup-daily-summaries.sh # Session automation setup
 ├── config/                    # Configuration files
 │   └── tts-config.json       # TTS voice and audio settings
 ├── docs/                      # Development documentation
 │   ├── project-structure.md   # Content organization guide
 │   └── development-guide.md   # This file
+├── logs/                      # Development tracking
+│   └── conversation-summaries/ # VS Code chat session summaries
+│       ├── README.md          # Chat automation documentation
+│       └── YYYY-MM-DD-session.md # Daily session summaries
 └── cache/                     # Temporary files (not synced)
     └── audio-cache/           # TTS generated audio files
 ```
@@ -215,6 +288,7 @@ print(f"Audio cache location: {cache_dir}")
 - **Configuration**: Extend `dev/config/` for new tool settings
 - **Documentation**: Add new guides to `dev/docs/`
 - **Caching**: Extend `dev/cache/` for other temporary files
+- **Chat Analysis**: Extend `dev/scripts/parse-chat-sessions.py` for deeper insights
 
 ## Best Practices
 

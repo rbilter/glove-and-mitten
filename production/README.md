@@ -62,6 +62,8 @@ production/completed/metadata/episode-###-[name]/
 
 ## Additional Documentation
 
-- **Automation**: See `workflows/process-episode.md` for episode processing
-- **Sync workflow**: See `workflows/commit-local.md` for Git+Google Drive sync
+- **Automation**: See `dev/workflows/process-episode.md` for episode processing
+- **Sync workflow**: See `dev/workflows/commit-local.md` for Git+Google Drive sync
+- **TTS System**: See `dev/workflows/text-to-speech.md` for character profile reading
+- **Chat Automation**: See `dev/logs/conversation-summaries/README.md` for session tracking
 - **Command interface**: Use `make help` to see all available automation commands

@@ -5,14 +5,14 @@ Provides high-quality text-to-speech reading of character profiles and other mar
 
 ## Usage
 **Commands:** 
-- `make read-profile PROFILE=<path>` (primary command)
-- `make read-all-profiles` (read all character profiles)
+- `make read-profile CHAR=character_name` (primary command)
+- `make read-profile CHAR=character_name TEST=1` (test mode)
 
 **Assistant Integration:**
 - "Read me the [character name] profile"
-- "Read all character profiles using TTS"
-- "Read this document: [path/to/file.md]"
-- "Run TTS workflow for [file]"
+- "Read the Glove character profile"
+- "Run TTS on Mitten character"
+- "Use text-to-speech for Principal Watch"
 
 ## What the TTS Workflow Does:
 1. ✅ **Cleans markdown** - Removes formatting for better speech
@@ -70,9 +70,9 @@ Provides high-quality text-to-speech reading of character profiles and other mar
 - Caches results for performance
 
 ### Makefile Integration
-- `make read-profile PROFILE=content/characters/main/glove.md`
-- `make read-all-profiles`
-- `make setup-tts` (runs one-time setup)
+- `make read-profile CHAR=glove`
+- `make read-profile CHAR=mitten TEST=1`
+- `make read-profile` (shows available characters)
 
 ## Voice Options
 
@@ -98,28 +98,35 @@ Edit `scripts/tts-config.json` to customize:
 ### Character Profile Reading
 ```bash
 # Read specific character
-make read-profile PROFILE=content/characters/main/glove.md
+make read-profile CHAR=glove
 
-# Read all profiles in sequence
-make read-all-profiles
+# Test mode (shorter content)
+make read-profile CHAR=mitten TEST=1
 
-# Read with specific voice
-make read-profile PROFILE=content/characters/main/mitten.md VOICE=en-US-Neural2-F
+# List available characters
+make read-profile
 ```
 
 ### Assistant Commands
-- **"Read me the Glove profile"** → Reads `content/characters/main/glove.md`
-- **"Read all character profiles"** → Reads all profiles in order
-- **"Read Principal Watch profile"** → Reads `content/characters/sagas/school-daze/principal-watch.md`
+- **"Read me the Glove profile"** → Reads Glove character profile
+- **"Read Principal Watch profile"** → Reads Principal Watch character
+- **"Use TTS for Mitten"** → Reads Mitten character profile
 
 ## File Structure
 ```
-scripts/
-├── read-profile.py          # Main TTS script
-├── tts-config.json         # Voice and audio settings
-└── audio-cache/            # Generated audio files
-    ├── glove-profile.mp3
-    ├── mitten-profile.mp3
+dev/scripts/
+├── read-profile.py             # Main TTS script
+├── parse-chat-sessions.py      # Chat automation
+├── daily-session-summary.sh    # Session tracking
+└── setup-daily-summaries.sh    # Automation setup
+
+dev/config/
+└── tts-config.json            # Voice and audio settings
+
+dev/cache/
+└── audio-cache/               # Generated audio files
+    ├── tts-glove-*.mp3
+    ├── tts-mitten-*.mp3
     └── ...
 ```
 

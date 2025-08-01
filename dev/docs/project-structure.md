@@ -1,8 +1,8 @@
 # Project Structure Documentation
 
-## Current Status: **170 directories, 234 files**
+## Current Status: **48 directories, 98 files**
 
-Complete project organization with comprehensive asset library and production workflows.
+Complete project organization with comprehensive asset library, production workflows, and automated development tracking.
 
 ## Implemented Structure
 
@@ -50,15 +50,25 @@ glove-and-mitten/
 │   └── README.md
 ├── dev/                              # 🔧 DEVELOPMENT TOOLS
 │   ├── scripts/
+│   │   ├── read-profile.py           # TTS character reading
+│   │   ├── parse-chat-sessions.py    # VS Code chat session extraction
+│   │   ├── daily-session-summary.sh  # Automated development tracking
+│   │   └── setup-daily-summaries.sh  # Session automation setup
 │   ├── workflows/
 │   │   ├── commit-local.md
-│   │   └── process-episode.md
+│   │   ├── process-episode.md
+│   │   └── text-to-speech.md
 │   ├── config/
+│   │   └── tts-config.json          # TTS voice configuration
 │   ├── docs/
 │   │   ├── project-structure.md
 │   │   └── development-guide.md
+│   ├── logs/
+│   │   └── conversation-summaries/   # Automated session tracking
+│   │       ├── README.md
+│   │       └── YYYY-MM-DD-session.md # Daily session summaries
 │   └── cache/
-│       └── audio-cache/
+│       └── audio-cache/             # TTS generated audio files
 ├── Makefile                          # 🔧 AUTOMATION
 ├── README.md                         # 📖 PROJECT OVERVIEW
 ├── series-bible.md                   # 📚 CREATIVE GUIDELINES
@@ -126,14 +136,24 @@ Scripts, automation, configuration, and documentation for the technical developm
   - `README.md`: Production workflow documentation
 
 ### dev/ - Development Tools
-- **scripts/**: Automation scripts (TTS, episode processing)
+- **scripts/**: Automation scripts and development utilities
+  - `read-profile.py`: Google Cloud TTS character profile audio generation
+  - `parse-chat-sessions.py`: VS Code chat session extraction and processing
+  - `daily-session-summary.sh`: Automated development session tracking
+  - `setup-daily-summaries.sh`: Installation and management of session automation
 - **workflows/**: Process documentation
   - `commit-local.md`: Git commit + Google Drive sync workflow  
   - `process-episode.md`: PowerPoint → PDF → YouTube metadata automation
-- **config/**: Configuration files (TTS settings, environment)
+  - `text-to-speech.md`: TTS character profile reading workflow
+- **config/**: Configuration files
+  - `tts-config.json`: Google Cloud TTS voice and audio settings
 - **docs/**: Development documentation
   - `project-structure.md`: This documentation
   - `development-guide.md`: How to use development tools
+- **logs/**: Automated development tracking
+  - `conversation-summaries/`: VS Code chat session summaries and daily session tracking
+    - `README.md`: Chat automation system documentation
+    - `YYYY-MM-DD-session.md`: Daily development session summaries with accurate timestamps
 - **cache/**: Temporary files (audio cache, not synced)
 
 ### Root Files
@@ -161,6 +181,10 @@ Scripts, automation, configuration, and documentation for the technical developm
   - Configuration in `dev/config/tts-config.json`
   - Audio cache in `dev/cache/audio-cache/` (excluded from sync)
   - Scripts in `dev/scripts/read-profile.py`
+- **Chat Automation**: VS Code integration for development session tracking
+  - Chat session extraction via `dev/scripts/parse-chat-sessions.py`
+  - Automated daily summaries via `dev/scripts/daily-session-summary.sh`
+  - Historical development tracking in `dev/logs/conversation-summaries/`
 - **Automation**: Makefile-based workflow commands
 - **Documentation**: Comprehensive guides in `dev/docs/`
 
@@ -181,6 +205,8 @@ Scripts, automation, configuration, and documentation for the technical developm
 - **Centralized configuration**: All technical settings in one location
 - **Efficient caching**: Temporary files grouped and properly excluded
 - **Clear automation**: Simple Makefile interface to complex workflows
+- **Development tracking**: Automated session summaries preserve context and decisions
+- **AI integration**: VS Code chat sessions captured for project history
 
 ### 🎬 Production Benefits
 - **Hybrid workflow**: Git for metadata, Google Drive for large video files

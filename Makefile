@@ -49,7 +49,7 @@ sync: commit-local
 
 # Commit local changes workflow
 commit-local:
-	@echo "� Running commit-local workflow..."
+	@echo "🔄 Running commit-local workflow..."
 	@echo "📖 See workflows/commit-local.md for details"
 	@echo ""
 	@echo "To execute this workflow, tell the assistant:"
