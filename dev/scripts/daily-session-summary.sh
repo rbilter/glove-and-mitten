@@ -87,13 +87,13 @@ get_git_summary() {
     echo ""
 }
 
-# Function to get chat conversations summary
+# Function to get chat conversations summary (as subsection)
 get_chat_summary() {
     local chat_parser="$REPO_DIR/dev/scripts/parse-chat-sessions.py"
     
     # Check if chat parser exists and is executable
     if [ ! -x "$chat_parser" ]; then
-        echo "## 💬 Chat Conversations"
+        echo "### 💬 Chat Conversations"
         echo ""
         echo "*Chat parser not available or not executable*"
         echo ""
@@ -105,42 +105,39 @@ get_chat_summary() {
     chat_content=$(python3 "$chat_parser" --date "$TODAY" 2>/dev/null)
     
     if [ $? -eq 0 ] && [ -n "$chat_content" ]; then
-        echo "$chat_content"
+        # Replace the main header with a subsection header
+        echo "$chat_content" | sed 's/^## 💬 Chat Conversations/### 💬 Chat Conversations/'
         echo ""
     else
-        echo "## 💬 Chat Conversations"
+        echo "### 💬 Chat Conversations"
         echo ""
         echo "*No chat conversations found for today*"
         echo ""
     fi
 }
 
-# Function to create active session summary
-create_active_summary() {
-    log "${GREEN}📝 Creating active session summary...${NC}"
+# Function to get structured insights from chat
+get_chat_insights() {
+    local chat_parser="$REPO_DIR/dev/scripts/parse-chat-sessions.py"
     
-    cat > "$DELTA_FILE" << EOF
-# Session Summary - $TODAY
-*Changes and additions since baseline session*
+    # Check if chat parser exists and is executable
+    if [ ! -x "$chat_parser" ]; then
+        return 1
+    fi
+    
+    # Try to get structured insights from today's chat sessions
+    python3 "$chat_parser" --date "$TODAY" --format insights 2>/dev/null
+}
 
-## 📅 Session Info
-- **Date**: $TODAY
-- **Previous Baseline**: $(ls -t "$SUMMARY_DIR"/*baseline.md 2>/dev/null | head -1 | xargs basename 2>/dev/null || echo "No baseline found")
-- **Session Type**: Active Development Session
-- **Auto-Generated**: $(date '+%Y-%m-%d %H:%M:%S')
-
-$(get_git_summary)
-
-$(get_chat_summary)
-
-## 🔄 Session Activity
-*This summary was auto-generated. Manual updates can be added below.*
-
+# Function to populate session sections with chat insights
+populate_sections_with_insights() {
+    local insights_json="$1"
+    
+    if [ -z "$insights_json" ] || [ "$insights_json" = "null" ]; then
+        # No insights available, return default template
+        cat << 'EOF'
 ### Tasks Worked On
 - [ ] *Add tasks worked on today*
-
-### Files Modified
-- See git activity above
 
 ### Decisions Made
 - *Add key decisions made during the session*
@@ -156,6 +153,95 @@ $(get_chat_summary)
 
 ## 💭 Notes
 - *Add any additional context or observations*
+EOF
+        return
+    fi
+    
+    # Extract insights using jq
+    local tasks_worked_on=$(echo "$insights_json" | jq -r '.tasks_worked_on[]? // empty' 2>/dev/null)
+    local decisions_made=$(echo "$insights_json" | jq -r '.decisions_made[]? // empty' 2>/dev/null)
+    local problems_solved=$(echo "$insights_json" | jq -r '.problems_solved[]? // empty' 2>/dev/null)
+    local ideas_discussed=$(echo "$insights_json" | jq -r '.ideas_discussed[]? // empty' 2>/dev/null)
+    local for_next_session=$(echo "$insights_json" | jq -r '.for_next_session[]? // empty' 2>/dev/null)
+    local notes=$(echo "$insights_json" | jq -r '.notes[]? // empty' 2>/dev/null)
+    
+    # Generate sections with insights
+    echo "### Tasks Worked On"
+    if [ -n "$tasks_worked_on" ]; then
+        echo "$tasks_worked_on"
+    else
+        echo "- [ ] *Add tasks worked on today*"
+    fi
+    echo ""
+    
+    echo "### Decisions Made"
+    if [ -n "$decisions_made" ]; then
+        echo "$decisions_made"
+    else
+        echo "- *Add key decisions made during the session*"
+    fi
+    echo ""
+    
+    echo "### Problems Solved"
+    if [ -n "$problems_solved" ]; then
+        echo "$problems_solved"
+    else
+        echo "- *Add problems encountered and how they were resolved*"
+    fi
+    echo ""
+    
+    echo "### Ideas Discussed"
+    if [ -n "$ideas_discussed" ]; then
+        echo "$ideas_discussed"
+    else
+        echo "- *Add new ideas or approaches discussed*"
+    fi
+    echo ""
+    
+    echo "### ⏭️ For Next Session"
+    if [ -n "$for_next_session" ]; then
+        echo "$for_next_session"
+    else
+        echo "- *Add goals and action items for next session*"
+    fi
+    echo ""
+    
+    echo "### 💭 Notes"
+    if [ -n "$notes" ]; then
+        echo "$notes"
+    else
+        echo "- *Add any additional context or observations*"
+    fi
+    echo ""
+    
+    # Add chat conversations under Session Activity
+    get_chat_summary | tail -n +2  # Skip the first line which is the header
+}
+
+# Function to create active session summary
+create_active_summary() {
+    log "${GREEN}📝 Creating active session summary...${NC}"
+    
+    # Get chat insights for structured sections
+    local insights_json
+    insights_json=$(get_chat_insights)
+    
+    cat > "$DELTA_FILE" << EOF
+# Session Summary - $TODAY
+*Changes and additions since baseline session*
+
+## 📅 Session Info
+- **Date**: $TODAY
+- **Previous Baseline**: $(ls -t "$SUMMARY_DIR"/*baseline.md 2>/dev/null | head -1 | xargs basename 2>/dev/null || echo "No baseline found")
+- **Session Type**: Active Development Session
+- **Auto-Generated**: $(date '+%Y-%m-%d %H:%M:%S')
+
+$(get_git_summary)
+
+## 🔄 Session Activity
+*This summary was auto-generated. Manual updates can be added below.*
+
+$(populate_sections_with_insights "$insights_json")
 
 ---
 *Auto-generated on $TODAY at $(date '+%H:%M:%S'). Edit this file to add manual session details.*

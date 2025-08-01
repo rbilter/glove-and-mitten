@@ -60,15 +60,24 @@ def parse_chat_session(session_file, target_date=None):
         print(f"Error reading {session_file}: {e}", file=sys.stderr)
         return []
 
-    # Check if this session matches the target date based on session timestamps
+    # Include sessions that have been active within the last 7 days
+    # VS Code sessions are long-lived and don't have per-message timestamps
     session_timestamp = session_data.get('lastMessageDate', 0) or session_data.get('creationDate', 0)
     if target_date and session_timestamp:
         session_date = datetime.fromtimestamp(session_timestamp / 1000, tz=timezone.utc).date()
-        if session_date != target_date:
-            return []  # Skip this session entirely if it doesn't match the date
+        days_since_activity = (target_date - session_date).days
+        if days_since_activity > 7:  # Skip sessions older than 7 days
+            return []
 
     conversations = []
     requests = session_data.get('requests', [])
+    
+    # Since VS Code sessions can span multiple days and we can't filter by actual message timestamps,
+    # we'll take ALL conversations from sessions that have been active within the last 7 days.
+    # This ensures we capture the complete daily activity.
+    
+    # No conversation limiting - capture all conversations from active sessions
+    # The 7-day session filter above already handles excluding very old sessions
     
     # Use session timestamp as a base for individual messages
     base_timestamp = session_timestamp or datetime.now(timezone.utc).timestamp() * 1000
@@ -142,6 +151,214 @@ def extract_daily_conversations(target_date=None):
     return all_conversations
 
 
+def analyze_conversations_for_structure(conversations):
+    """Analyze conversations and extract structured insights for session sections."""
+    if not conversations:
+        return {
+            'tasks_worked_on': [],
+            'decisions_made': [],
+            'problems_solved': [],
+            'ideas_discussed': [],
+            'for_next_session': [],
+            'notes': []
+        }
+    
+    # Combine all conversation content for analysis
+    all_content = []
+    for conv in conversations:
+        all_content.append(f"User: {conv['user_message']}")
+        if conv['copilot_response']:
+            all_content.append(f"Assistant: {conv['copilot_response']}")
+    
+    full_text = '\n'.join(all_content)
+    
+    # Analyze content and categorize insights
+    insights = {
+        'tasks_worked_on': extract_tasks(full_text),
+        'decisions_made': extract_decisions(full_text),
+        'problems_solved': extract_problems_and_solutions(full_text),
+        'ideas_discussed': extract_ideas(full_text),
+        'for_next_session': extract_next_steps(full_text),
+        'notes': extract_notable_context(full_text)
+    }
+    
+    return insights
+
+
+def extract_tasks(text):
+    """Extract tasks and implementation work from conversation."""
+    tasks = []
+    # Look for implementation patterns with better context
+    patterns = [
+        r"(?:implement(?:ed|ing)?|creat(?:ed|ing)?|build(?:ing)?|develop(?:ed|ing)?)\s+([^.!?\n]{10,80})",
+        r"(?:work(?:ed|ing)?|add(?:ed|ing)?|fix(?:ed|ing)?)\s+(?:on\s+)?([^.!?\n]{10,80})",
+        r"(?:enhanc(?:ed|ing)?|updat(?:ed|ing)?|improv(?:ed|ing)?)\s+([^.!?\n]{10,80})",
+        r"(?:set\s+up|configur(?:ed|ing)?|establish(?:ed|ing)?)\s+([^.!?\n]{10,80})"
+    ]
+    
+    import re
+    processed = set()  # Track processed tasks to avoid duplicates
+    
+    for pattern in patterns:
+        matches = re.finditer(pattern, text, re.IGNORECASE)
+        for match in matches:
+            task = match.group(1).strip()
+            # Clean up the task text
+            task = re.sub(r'\s+', ' ', task)  # Normalize whitespace
+            task = task.rstrip('.,;:')  # Remove trailing punctuation
+            
+            # Skip if too short, too long, or already processed
+            if 10 <= len(task) <= 80 and task.lower() not in processed:
+                processed.add(task.lower())
+                tasks.append(f"- {task}")
+    
+    return tasks[:5]  # Limit to top 5 tasks
+
+
+def extract_decisions(text):
+    """Extract key decisions made during the session."""
+    decisions = []
+    patterns = [
+        r"(?:decided?|chose|went\s+with)\s+(?:to\s+)?([^.!?\n]{10,100})",
+        r"(?:option|approach|choice)\s+\d*[:.]\s*([^.!?\n]{10,100})",
+        r"(?:strategy|plan|direction)[:.]\s*([^.!?\n]{10,100})",
+        r"(?:let's|we'll|we\s+should)\s+(?:use|go\s+with|implement)\s+([^.!?\n]{10,100})"
+    ]
+    
+    import re
+    processed = set()
+    
+    for pattern in patterns:
+        matches = re.finditer(pattern, text, re.IGNORECASE)
+        for match in matches:
+            decision = match.group(1).strip()
+            # Clean up the decision text
+            decision = re.sub(r'\s+', ' ', decision)
+            decision = decision.rstrip('.,;:')
+            
+            if 10 <= len(decision) <= 100 and decision.lower() not in processed:
+                processed.add(decision.lower())
+                decisions.append(f"- {decision}")
+    
+    return decisions[:3]  # Limit to top 3 decisions
+
+
+def extract_problems_and_solutions(text):
+    """Extract problems encountered and their solutions."""
+    problems = []
+    patterns = [
+        r"(?:issue|problem|error|bug)[:.]\s*([^.!?\n]{10,100})",
+        r"(?:fixed|solved|resolved|addressed)\s+(?:the\s+)?([^.!?\n]{10,100})",
+        r"(?:hanging|failing|not\s+working)[:.]\s*([^.!?\n]{10,100})",
+        r"(?:challenge|difficulty|trouble)[:.]\s*([^.!?\n]{10,100})"
+    ]
+    
+    import re
+    processed = set()
+    
+    for pattern in patterns:
+        matches = re.finditer(pattern, text, re.IGNORECASE)
+        for match in matches:
+            problem = match.group(1).strip()
+            # Clean up the problem text
+            problem = re.sub(r'\s+', ' ', problem)
+            problem = problem.rstrip('.,;:')
+            
+            if 10 <= len(problem) <= 100 and problem.lower() not in processed:
+                processed.add(problem.lower())
+                problems.append(f"- {problem}")
+    
+    return problems[:3]  # Limit to top 3 problems
+
+
+def extract_ideas(text):
+    """Extract ideas and concepts discussed."""
+    ideas = []
+    patterns = [
+        r"(?:idea|concept|thought)[:.]\s*([^.!?\n]{10,120})",
+        r"(?:approach|strategy|method)[:.]\s*([^.!?\n]{10,120})",
+        r"(?:could|might|maybe)\s+(?:we\s+)?([^.!?\n]{10,120})",
+        r"(?:consider|suggest|recommend)\s+([^.!?\n]{10,120})",
+        r"(?:what\s+if|how\s+about)\s+([^.!?\n]{10,120})"
+    ]
+    
+    import re
+    processed = set()
+    
+    for pattern in patterns:
+        matches = re.finditer(pattern, text, re.IGNORECASE)
+        for match in matches:
+            idea = match.group(1).strip()
+            # Clean up the idea text
+            idea = re.sub(r'\s+', ' ', idea)
+            idea = idea.rstrip('.,;:')
+            
+            if 10 <= len(idea) <= 120 and idea.lower() not in processed:
+                processed.add(idea.lower())
+                ideas.append(f"- {idea}")
+    
+    return ideas[:4]  # Limit to top 4 ideas
+
+
+def extract_next_steps(text):
+    """Extract next steps and action items."""
+    next_steps = []
+    patterns = [
+        r"(?:next|later|continue)\s+(?:we\s+)?(?:should\s+|will\s+|need\s+to\s+)?([^.!?\n]{10,100})",
+        r"(?:need\s+to|should|plan\s+to)\s+([^.!?\n]{10,100})",
+        r"(?:todo|action\s+item)[:.]\s*([^.!?\n]{10,100})",
+        r"(?:for\s+next\s+session|tomorrow|future)[:.]\s*([^.!?\n]{10,100})"
+    ]
+    
+    import re
+    processed = set()
+    
+    for pattern in patterns:
+        matches = re.finditer(pattern, text, re.IGNORECASE)
+        for match in matches:
+            step = match.group(1).strip()
+            # Clean up the step text
+            step = re.sub(r'\s+', ' ', step)
+            step = step.rstrip('.,;:')
+            
+            if 10 <= len(step) <= 100 and step.lower() not in processed:
+                processed.add(step.lower())
+                next_steps.append(f"- {step}")
+    
+    return next_steps[:3]  # Limit to top 3 next steps
+
+
+def extract_notable_context(text):
+    """Extract notable context and observations."""
+    notes = []
+    
+    # Look for specific technical patterns and key themes
+    context_patterns = [
+        (r"git\s+commit.*hang", "Git commit hanging issue identified and addressed"),
+        (r"multi-?line.*(?:command|issue|problem)", "Multi-line command execution challenges discussed"),
+        (r"automation.*(?:improve|implement|enhance)", "Automation improvements implemented"),
+        (r"vs\s*code.*(?:chat|copilot|integration)", "VS Code/Copilot integration work"),
+        (r"(?:folder|directory).*(?:structure|organization)", "Project structure and organization improvements"),
+        (r"workflow.*(?:create|establish|document)", "Workflow documentation and processes established"),
+        (r"(?:sync|backup).*(?:google\s*drive|git)", "Sync and backup processes implemented"),
+        (r"(?:series\s*bible|character.*profile)", "Creative project development and character work")
+    ]
+    
+    import re
+    for pattern, note in context_patterns:
+        if re.search(pattern, text, re.IGNORECASE):
+            notes.append(f"- {note}")
+    
+    # Add any specific insights from the conversation content
+    if "parse-chat-sessions" in text.lower():
+        notes.append("- Chat session parsing and integration developed")
+    
+    if "heartbeat" in text.lower() and "automation" in text.lower():
+        notes.append("- Heartbeat logging for automation monitoring implemented")
+    
+    return notes[:4]  # Limit to top 4 notes
+
+
 def format_conversations_for_summary(conversations):
     """Format conversations for inclusion in daily summary."""
     if not conversations:
@@ -184,8 +401,8 @@ def format_conversations_for_summary(conversations):
 def main():
     parser = argparse.ArgumentParser(description='Parse VS Code chat sessions for daily summaries')
     parser.add_argument('--date', type=str, help='Target date (YYYY-MM-DD), defaults to today')
-    parser.add_argument('--format', choices=['summary', 'json'], default='summary', 
-                       help='Output format')
+    parser.add_argument('--format', choices=['summary', 'json', 'insights'], default='summary', 
+                       help='Output format: summary (raw chat), json (data), insights (structured analysis)')
     
     args = parser.parse_args()
     
@@ -204,6 +421,9 @@ def main():
     # Output in requested format
     if args.format == 'json':
         print(json.dumps(conversations, indent=2))
+    elif args.format == 'insights':
+        insights = analyze_conversations_for_structure(conversations)
+        print(json.dumps(insights, indent=2))
     else:
         print(format_conversations_for_summary(conversations))
 
