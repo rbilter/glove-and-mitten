@@ -16,28 +16,10 @@ import argparse
 
 def find_workspace_chat_dir():
     """Find the current workspace's chat session directory."""
-    vscode_storage = Path.home() / ".config/Code/User/workspaceStorage"
-    
-    if not vscode_storage.exists():
-        return None
-    
-    # Look for workspace.json files that mention this project
-    current_dir = Path.cwd()
-    project_name = current_dir.name
-    
-    for workspace_dir in vscode_storage.iterdir():
-        if workspace_dir.is_dir():
-            workspace_json = workspace_dir / "workspace.json"
-            if workspace_json.exists():
-                try:
-                    with open(workspace_json) as f:
-                        content = f.read()
-                        if project_name in content or str(current_dir) in content:
-                            chat_sessions_dir = workspace_dir / "chatSessions"
-                            if chat_sessions_dir.exists():
-                                return chat_sessions_dir
-                except (json.JSONDecodeError, IOError):
-                    continue
+    # Use the correct workspace for this project
+    correct_path = Path.home() / ".config/Code/User/workspaceStorage/6ef03f1d95db727baaf62cab09739e42/chatSessions"
+    if correct_path.exists():
+        return correct_path
     
     return None
 
@@ -60,32 +42,27 @@ def parse_chat_session(session_file, target_date=None):
         print(f"Error reading {session_file}: {e}", file=sys.stderr)
         return []
 
-    # Include sessions that have been active within the last 7 days
-    # VS Code sessions are long-lived and don't have per-message timestamps
-    session_timestamp = session_data.get('lastMessageDate', 0) or session_data.get('creationDate', 0)
-    if target_date and session_timestamp:
-        session_date = datetime.fromtimestamp(session_timestamp / 1000, tz=timezone.utc).date()
-        days_since_activity = (target_date - session_date).days
-        if days_since_activity > 7:  # Skip sessions older than 7 days
-            return []
-
     conversations = []
     requests = session_data.get('requests', [])
     
-    # Since VS Code sessions can span multiple days and we can't filter by actual message timestamps,
-    # we'll take ALL conversations from sessions that have been active within the last 7 days.
-    # This ensures we capture the complete daily activity.
-    
-    # No conversation limiting - capture all conversations from active sessions
-    # The 7-day session filter above already handles excluding very old sessions
-    
-    # Use session timestamp as a base for individual messages
-    base_timestamp = session_timestamp or datetime.now(timezone.utc).timestamp() * 1000
+    # VS Code now provides individual timestamps for each request!
+    # Filter conversations by their actual individual timestamps
     
     for i, request in enumerate(requests):
-        # Use session timestamp + offset for individual messages
-        msg_timestamp = base_timestamp + (i * 1000)  # Add 1 second per message
-        msg_date = datetime.fromtimestamp(msg_timestamp / 1000, tz=timezone.utc)
+        # Use the individual request timestamp (the key discovery!)
+        individual_timestamp = request.get('timestamp', 0)
+        
+        if individual_timestamp:
+            # Convert individual timestamp to date for filtering
+            msg_date = datetime.fromtimestamp(individual_timestamp / 1000, tz=timezone.utc)
+            request_date = msg_date.date()
+            
+            # Filter by target date if specified
+            if target_date and request_date != target_date:
+                continue  # Skip this conversation, it's not from the target date
+        else:
+            # Fallback: if no individual timestamp, skip this request
+            continue
         
         # Extract user message
         message = request.get('message', {})
@@ -110,12 +87,12 @@ def parse_chat_session(session_file, target_date=None):
             response_text = str(response['value']).strip()
         
         if user_text:  # Only include if there's actual user content
-                conversations.append({
-                    'timestamp': msg_date.isoformat(),
-                    'user_message': user_text,
-                    'copilot_response': response_text,
-                    'request_id': request.get('requestId', '')
-                })
+            conversations.append({
+                'timestamp': msg_date.isoformat(),
+                'user_message': user_text,
+                'copilot_response': response_text,
+                'request_id': request.get('requestId', '')
+            })
     
     return conversations
 

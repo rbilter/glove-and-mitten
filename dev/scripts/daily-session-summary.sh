@@ -7,8 +7,9 @@ set -e
 # Configuration
 REPO_DIR="/home/rbilter/work/repos/glove-and-mitten"
 SUMMARY_DIR="$REPO_DIR/dev/logs/conversation-summaries"
-TODAY=$(date +%Y-%m-%d)
-DELTA_FILE="$SUMMARY_DIR/$TODAY-session.md"
+# Use provided date or default to today
+TARGET_DATE="${1:-$(date +%Y-%m-%d)}"
+DELTA_FILE="$SUMMARY_DIR/$TARGET_DATE-session.md"
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -100,9 +101,9 @@ get_chat_summary() {
         return
     fi
     
-    # Try to parse today's chat sessions
+    # Try to parse target date's chat sessions
     local chat_content
-    chat_content=$(python3 "$chat_parser" --date "$TODAY" 2>/dev/null)
+    chat_content=$(python3 "$chat_parser" --date "$TARGET_DATE" 2>/dev/null)
     
     if [ $? -eq 0 ] && [ -n "$chat_content" ]; then
         # Replace the main header with a subsection header
@@ -125,8 +126,8 @@ get_chat_insights() {
         return 1
     fi
     
-    # Try to get structured insights from today's chat sessions
-    python3 "$chat_parser" --date "$TODAY" --format insights 2>/dev/null
+    # Try to get structured insights from target date's chat sessions
+    python3 "$chat_parser" --date "$TARGET_DATE" --format insights 2>/dev/null
 }
 
 # Function to populate session sections with chat insights
@@ -231,7 +232,7 @@ create_active_summary() {
 *Changes and additions since baseline session*
 
 ## 📅 Session Info
-- **Date**: $TODAY
+- **Date**: $TARGET_DATE
 - **Previous Baseline**: $(ls -t "$SUMMARY_DIR"/*baseline.md 2>/dev/null | head -1 | xargs basename 2>/dev/null || echo "No baseline found")
 - **Session Type**: Active Development Session
 - **Auto-Generated**: $(date '+%Y-%m-%d %H:%M:%S')
@@ -284,7 +285,7 @@ update_existing_summary() {
 # Main execution
 main() {
     log "${GREEN}🤖 Daily Session Summary Generator${NC}"
-    log "📅 Date: $TODAY"
+    log "📅 Date: $TARGET_DATE"
     
     # Check repository
     check_repo
