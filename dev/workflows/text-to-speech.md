@@ -1,12 +1,18 @@
 # Text-to-Speech Workflow
 
 ## Overview
-Provides high-quality text-to-speech reading of character profiles and other markdown content using Google Cloud Text-to-Speech.
+Provides high-quality text-to-speech reading of charac### Usage Examples
+
+### Character Profile Reading
+```bash
+# Natural language commands
+"Read Glove profile"
+"Use TTS for Mitten" 
+"read-profile Principal Watch"
+```and other markdown content using Google Cloud Text-to-Speech.
 
 ## Usage
-**Commands:** 
-- `make read-profile CHAR=character_name` (primary command)
-- `make read-profile CHAR=character_name TEST=1` (test mode)
+**Natural Language Commands:**
 
 **Assistant Integration:**
 - "Read me the [character name] profile"

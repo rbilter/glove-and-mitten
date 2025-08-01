@@ -4,12 +4,7 @@
 The `process-episode` workflow automatically generates YouTube metadata from completed PowerPoint episodes, ensuring descriptions are based on actual episode content rather than assumptions.
 
 ## Usage
-**Command:** `make process-episode EPISODE=path/to/episode.pptx`
-
-**Example:**
-```bash
-make process-episode EPISODE=content/stories/sagas/school-daze/stories/lights/tuff-daze/01-lights-tuff-daze-episode.pptx
-```
+**Natural Language Commands:**
 
 **Assistant Integration:**
 - "Process episode: [episode-path]"

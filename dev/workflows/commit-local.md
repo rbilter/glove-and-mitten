@@ -4,9 +4,7 @@
 Ensures local changes are properly committed to Git and synchronized with Google Drive, keeping all three environments (local, Git, Google Drive) in sync.
 
 ## Usage
-**Commands:** 
-- `make commit-local` (primary command)
-- `make sync` (alias for commit-local)
+**Natural Language Commands:**
 
 **Assistant Integration:**
 - "Commit local changes and sync"

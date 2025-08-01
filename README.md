@@ -6,7 +6,7 @@ A creative project for developing YouTube episodes featuring the characters Glov
 
 1. Read [Series Bible](content/series-bible.md) for character guidelines
 2. Explore [Project Structure](dev/docs/project-structure.md) for organization
-3. Use `make help` to see available automation commands
+3. Use natural language commands with AI assistant for automation
 4. Start creating episodes using saga templates in `content/stories/sagas/`
 
 ## Project Overview
@@ -25,15 +25,11 @@ This repository contains all source materials, workflows, and production assets 
 
 ### Automation Commands
 ```bash
-# Using Makefile interface (recommended)
-make help                    # Show all available commands
-make process-episode EPISODE=path/to/episode.pptx
-make commit-local           # Commit changes and sync to Google Drive  
-make sync                   # Alias for commit-local
-make status                 # Show project status
-make read-profile CHAR=character_name  # TTS character profile reading
-make list-characters        # Show available characters for TTS
-make list-voices           # Show available TTS voices
+# Natural language commands with AI assistant (recommended)
+"commit-local"              # Commit changes and sync to Google Drive  
+"process-episode: [path]"   # Process episode for metadata generation
+"help"                      # Show all available commands
+"status"                    # Show project status
 
 # Direct workflow access
 dev/workflows/process-episode.md     # Episode processing workflow
@@ -84,10 +80,9 @@ dev/workflows/text-to-speech.md     # TTS character profile reading
 ## Development Workflow
 
 1. **Create Episodes** using PowerPoint templates in saga directories
-2. **Process Episodes** with `make process-episode` to generate metadata
-3. **Use TTS System** with `make read-profile` for character development
-4. **Track Progress** via automated conversation summaries and session logs
-5. **Commit Changes** with `make commit-local` for Git + Google Drive sync
-6. **Collaborate** via GitHub repository with automatic cloud backup
+2. **Process Episodes** with "process-episode: [path]" to generate metadata
+3. **Track Progress** via automated conversation summaries and session logs
+4. **Commit Changes** with "commit-local" for Git + Google Drive sync
+5. **Collaborate** via GitHub repository with automatic cloud backup
 
 Ready to bring Glove and Mitten's adventures to life! 🎬

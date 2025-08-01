@@ -51,13 +51,12 @@ This guide covers how to use the development tools and workflows in the Glove an
 
 ```bash
 # Read a character profile with TTS
-make read-profile CHAR=glove
+"read-profile glove"
+"Read Glove profile"
+"Use TTS for Glove"
 
-# Test mode (shorter audio for quick testing)
-make read-profile CHAR=glove TEST=1
-
-# List available characters
-make read-profile
+# List available characters - ask the assistant
+"What characters are available for TTS?"
 ```
 
 #### Available Characters
@@ -155,20 +154,17 @@ ls dev/logs/conversation-summaries/
 
 ```bash
 # TTS System
-make read-profile CHAR=character_name    # Generate and play character audio
-make read-profile CHAR=character TEST=1  # Quick test mode
-make list-characters                     # List available character profiles
-make list-voices                        # List available TTS voices
+"read-profile [character]"              # Generate and play character audio  
+"Read [character] profile"              # Natural language TTS trigger
+"Use TTS for [character]"               # Alternative TTS trigger
 
 # Project Management
-make commit-local                        # Git commit + GitHub + Google Drive sync
-make sync                               # Alias for commit-local
-make help                               # Show all available commands
-make clean                             # Clean up temporary files
-make status                            # Show project status
+"commit-local"                          # Git commit + GitHub + Google Drive sync
+"help"                                  # Show all available commands
+"status"                               # Show project status
 
 # Episode Production
-make process-episode EPISODE=name      # Process episode for production
+"process-episode: [path]"              # Process episode for production
 
 # Development Tracking (automated)
 # Chat sessions are automatically captured and summarized daily
@@ -224,14 +220,14 @@ dev/
 ### Character Development Workflow
 
 1. **Create Character**: Add markdown file to `content/characters/main/` or `content/characters/sagas/`
-2. **Test Audio**: `make read-profile CHAR=character_name TEST=1`
+2. **Test Audio**: "Read [character] profile" to review with TTS
 3. **Refine Content**: Edit character file based on audio review
-4. **Generate Final**: `make read-profile CHAR=character_name`
+4. **Generate Final**: "Use TTS for [character]" for final audio generation
 
 ### Development Workflow
 
 1. **Make Changes**: Edit scripts, configuration, or content
-2. **Test Locally**: Use `TEST=1` mode for quick validation
+2. **Test Locally**: Use natural language commands for quick validation
 3. **Validate Full**: Run complete workflows to ensure everything works
 4. **Document**: Update relevant documentation files
 
@@ -295,7 +291,7 @@ print(f"Audio cache location: {cache_dir}")
 
 ### Development
 
-- **Test Early**: Use `TEST=1` mode for quick iterations
+- **Test Early**: Use natural language commands for quick iterations
 - **Clean Regularly**: Clear cache when testing configuration changes
 - **Document Changes**: Update this guide when adding new features
 - **Validate Paths**: Double-check file paths after reorganization
