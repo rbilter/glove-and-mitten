@@ -12,8 +12,8 @@ A creative project for developing YouTube episodes featuring the characters Glov
 ## Project Overview
 
 This repository contains all source materials, workflows, and production assets for creating educational and entertaining episodes featuring:
-- **Glove** - Adventure-seeking character
-- **Mitten** - Social media enthusiast  
+- **Glove** - Methodical problem-solver and self-appointed security specialist
+- **Mitten** - Warm-hearted social media enthusiast and community builder  
 - **Supporting Cast** - Principal Watch, Instructor Beaker, and the "Mittenites"
 
 ## Quick Start
@@ -28,6 +28,7 @@ This repository contains all source materials, workflows, and production assets 
 # Natural language commands with AI assistant (recommended)
 "commit-local"              # Commit changes and sync to Google Drive  
 "process-episode: [path]"   # Process episode for metadata generation
+"read-profile [character]"  # Text-to-speech for character profiles
 "help"                      # Show all available commands
 "status"                    # Show project status
 
@@ -68,8 +69,8 @@ dev/workflows/text-to-speech.md     # TTS character profile reading
 
 ## Stats
 
-- **48 directories** with organized creative and development assets
-- **98 project files** including episodes, characters, documentation, and automation scripts
+- **50 directories** with organized creative and development assets
+- **97 project files** including episodes, characters, documentation, and automation scripts
 - **28 markdown files** for comprehensive documentation and session tracking
 - **Hybrid workflow** combining Git version control with Google Drive cloud sync
 - **Automated metadata** generation from actual episode content

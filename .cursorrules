@@ -8,7 +8,7 @@ When the user requests these actions, follow the exact documented workflows:
 
 ### commit-local
 **Trigger**: "commit-local", "run commit-local", "sync local changes"
-**Action**: Execute the commit-local workflow exactly as documented in `workflows/commit-local.md`
+**Action**: Execute the commit-local workflow exactly as documented in `dev/workflows/commit-local.md`
 **Critical Rules**:
 - ALWAYS use multiple `-m` flags for git commits, NEVER multi-line strings
 - Follow the exact 11-step process: git status → add → commit → log → push → status → rclone sync → rclone check
@@ -16,12 +16,12 @@ When the user requests these actions, follow the exact documented workflows:
 
 ### process-episode
 **Trigger**: "process-episode", "Process episode: [path]"
-**Action**: Execute the process-episode workflow from `workflows/process-episode.md`
+**Action**: Execute the process-episode workflow from `dev/workflows/process-episode.md`
 **Steps**: Generate PDF → Extract content → Create metadata → Generate YouTube description
 
 ### text-to-speech
 **Trigger**: "read-profile", "Read [character] profile", "Use TTS for [character]"
-**Action**: Execute the text-to-speech workflow from `workflows/text-to-speech.md`
+**Action**: Execute the text-to-speech workflow from `dev/workflows/text-to-speech.md`
 **Steps**: Clean markdown → Call Google Cloud TTS → Play/save audio → Cache results
 
 ### utility-commands
@@ -96,9 +96,9 @@ When the user requests these actions, follow the exact documented workflows:
 6. **Always verify operations** - Use status checks after git and sync operations
 
 ### Workflow Documentation
-- `workflows/commit-local.md` - Git and Google Drive sync process
-- `workflows/process-episode.md` - Episode metadata generation
-- `workflows/text-to-speech.md` - Character profile TTS reading
+- `dev/workflows/commit-local.md` - Git and Google Drive sync process
+- `dev/workflows/process-episode.md` - Episode metadata generation
+- `dev/workflows/text-to-speech.md` - Character profile TTS reading
 - All workflows should be consulted before executing commands
 
 This project emphasizes **automation**, **organization**, and **consistency**. When in doubt, check existing documentation and follow established patterns rather than improvising new approaches.

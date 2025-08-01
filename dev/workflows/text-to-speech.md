@@ -9,6 +9,9 @@ Provides high-quality text-to-speech reading of charac### Usage Examples
 "Read Glove profile"
 "Use TTS for Mitten" 
 "read-profile Principal Watch"
+
+# List available characters - ask the assistant
+"What characters are available?"
 ```and other markdown content using Google Cloud Text-to-Speech.
 
 ## Usage
@@ -75,10 +78,10 @@ Provides high-quality text-to-speech reading of charac### Usage Examples
 - Plays audio or saves to file
 - Caches results for performance
 
-### Makefile Integration
-- `make read-profile CHAR=glove`
-- `make read-profile CHAR=mitten TEST=1`
-- `make read-profile` (shows available characters)
+### AI Assistant Integration
+- "read-profile [character]"
+- "Read [character] profile"
+- "Use TTS for [character]" (shows available characters)
 
 ## Voice Options
 

@@ -53,12 +53,12 @@ The `.rclone-filter` file controls what gets synced to Google Drive:
    git add -A  # Includes untracked files, modifications, and deletions
    ```
 
-4. **Generate Smart Commit Message**
+5. **Generate Smart Commit Message**
    - Analyze what types of files changed
    - Create descriptive commit message
    - Include date and change summary
 
-5. **Commit Changes**
+6. **Commit Changes**
    
    **Option A: Single-line message (recommended for automation)**
    ```bash
@@ -78,28 +78,28 @@ The `.rclone-filter` file controls what gets synced to Google Drive:
    Body with details"
    ```
 
-6. **Verify Commit Success**
+7. **Verify Commit Success**
    ```bash
    git log -1 --oneline  # Confirm commit was created
    ```
 
-7. **Push to Remote Repository**
+8. **Push to Remote Repository**
    ```bash
    git push origin main
    ```
 
-8. **Verify Push Success**
+9. **Verify Push Success**
    ```bash
    git status -b  # Confirm local branch is up to date with remote
    ```
 
 ### Phase 3: Google Drive Sync
-9. **Sync to Google Drive**
+10. **Sync to Google Drive**
    ```bash
    rclone sync . gdrive:glove-and-mitten --filter-from .rclone-filter --progress
    ```
 
-10. **Verify Sync**
+11. **Verify Sync**
    ```bash
    rclone check . gdrive:glove-and-mitten --filter-from .rclone-filter
    ```

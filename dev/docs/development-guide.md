@@ -148,7 +148,7 @@ ls dev/logs/conversation-summaries/
 - **Document project evolution** over time
 - **Enable easy handoffs** between team members or AI assistants
 
-## Makefile Commands
+## AI Assistant Commands
 
 ### Core Workflows
 
@@ -171,12 +171,12 @@ ls dev/logs/conversation-summaries/
 # See dev/logs/conversation-summaries/ for session history
 ```
 
-### Makefile Structure
+### AI Assistant Integration
 
-The Makefile provides a simple interface to complex workflows:
+The .cursorrules file provides natural language command interface:
+- **Workflow Triggers**: Natural language commands trigger documented workflows
 - **Path Management**: All script paths use `dev/scripts/`
-- **Parameter Validation**: Automatic checking of required parameters
-- **Help System**: Built-in help and parameter discovery
+- **Help System**: Built-in help and command discovery through AI assistant
 
 ## Development Tools Structure
 
@@ -281,7 +281,7 @@ print(f"Audio cache location: {cache_dir}")
 
 ### Extension Points
 
-- **New Scripts**: Add to `dev/scripts/` and integrate with Makefile
+- **New Scripts**: Add to `dev/scripts/` and integrate with .cursorrules workflow system
 - **Configuration**: Extend `dev/config/` for new tool settings
 - **Documentation**: Add new guides to `dev/docs/`
 - **Caching**: Extend `dev/cache/` for other temporary files
@@ -308,5 +308,5 @@ print(f"Audio cache location: {cache_dir}")
 For issues or questions:
 1. Check this development guide
 2. Review `project-structure.md` for content organization
-3. Check Makefile help: `make help`
+3. Use natural language commands with AI assistant
 4. Review script source code in `dev/scripts/`
