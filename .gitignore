@@ -204,6 +204,8 @@ logs/
 !dev/logs/
 !dev/logs/conversation-summaries/
 !dev/logs/conversation-summaries/*.md
+!dev/logs/conversation-summaries/*/
+!dev/logs/conversation-summaries/*/*.md
 
 # =============================================================================
 # SECURITY & CONFIGURATION

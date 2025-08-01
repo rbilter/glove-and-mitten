@@ -1,4 +1,21 @@
-# Conversation Summary System
+# Conversat## 🗂️ File Structure
+
+### Directory Organization
+- **Monthly Directories**: Session files are organized by month in `YYYY-MM/` format (e.g., `2025-07/`, `2025-08/`)
+- **Automatic Creation**: Monthly directories are created automatically when the first session of a new month is generated
+
+### Baseline Files
+- **Format**: `YYYY-MM-DD-session-baseline.md`
+- **Purpose**: Complete project status snapshot
+- **Created**: Periodically (weekly/monthly) or after major milestones
+- **Content**: Full context including completed tasks, system status, file structure, technical decisions
+- **Location**: Stored in the appropriate monthly directory
+
+### Delta Files  
+- **Format**: `YYYY-MM/YYYY-MM-DD-session.md` - Daily session files in monthly directories
+- **Created**: For each development session automatically
+- **Contains**: New tasks, file changes, decisions, problems solved, next steps
+- **Example**: `2025-08/2025-08-01-session.md` for August 1st, 2025 sessionSystem
 
 ## 📋 Overview
 This directory tracks conversation summaries using a delta-based approach to maintain context across multi-day development sessions. The system runs automatically every night and intelligently detects whether development work occurred.

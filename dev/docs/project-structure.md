@@ -65,8 +65,10 @@ glove-and-mitten/
 │   │   └── development-guide.md
 │   ├── logs/
 │   │   └── conversation-summaries/   # Automated session tracking
-│   │       ├── README.md
-│   │       └── YYYY-MM-DD-session.md # Daily session summaries
+│   │       ├── README.md             # System documentation
+│   │       ├── YYYY-MM/              # Monthly directories (e.g., 2025-07/, 2025-08/)
+│   │       │   └── YYYY-MM-DD-session.md # Daily session summaries
+│   │       └── automation-heartbeat.log # System activity log
 │   └── cache/
 │       └── audio-cache/             # TTS generated audio files
 ├── Makefile                          # 🔧 AUTOMATION
@@ -153,6 +155,7 @@ Scripts, automation, configuration, and documentation for the technical developm
 - **logs/**: Automated development tracking
   - `conversation-summaries/`: VS Code chat session summaries and daily session tracking
     - `README.md`: Chat automation system documentation
+    - `YYYY-MM/`: Monthly directories containing session files (e.g., `2025-07/`, `2025-08/`)
     - `YYYY-MM-DD-session.md`: Daily development session summaries with accurate timestamps
 - **cache/**: Temporary files (audio cache, not synced)
 

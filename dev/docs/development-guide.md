@@ -199,6 +199,7 @@ dev/
 ├── logs/                      # Development tracking
 │   └── conversation-summaries/ # VS Code chat session summaries
 │       ├── README.md          # Chat automation documentation
+│       ├── YYYY-MM/           # Monthly directories (e.g., 2025-07/)
 │       └── YYYY-MM-DD-session.md # Daily session summaries
 └── cache/                     # Temporary files (not synced)
     └── audio-cache/           # TTS generated audio files
