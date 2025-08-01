@@ -9,7 +9,8 @@ REPO_DIR="/home/rbilter/work/repos/glove-and-mitten"
 SUMMARY_DIR="$REPO_DIR/dev/logs/conversation-summaries"
 # Use provided date or default to today
 TARGET_DATE="${1:-$(date +%Y-%m-%d)}"
-DELTA_FILE="$SUMMARY_DIR/$TARGET_DATE-session.md"
+MONTH_DIR="$SUMMARY_DIR/$(date -d "$TARGET_DATE" +%Y-%m)"
+DELTA_FILE="$MONTH_DIR/$TARGET_DATE-session.md"
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -32,6 +33,17 @@ check_repo() {
     if [ ! -d ".git" ]; then
         log "${RED}❌ Not a git repository: $REPO_DIR${NC}"
         exit 1
+    fi
+}
+
+# Function to ensure monthly directory exists
+ensure_month_directory() {
+    if [ ! -d "$MONTH_DIR" ]; then
+        log "${YELLOW}📁 Creating monthly directory: $MONTH_DIR${NC}"
+        mkdir -p "$MONTH_DIR" || {
+            log "${RED}❌ Cannot create monthly directory: $MONTH_DIR${NC}"
+            exit 1
+        }
     fi
 }
 
@@ -292,6 +304,9 @@ main() {
     
     # Create summary directory if it doesn't exist
     mkdir -p "$SUMMARY_DIR"
+    
+    # Ensure monthly directory exists
+    ensure_month_directory
     
     # Check if delta file already exists
     if [ -f "$DELTA_FILE" ]; then
