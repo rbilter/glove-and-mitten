@@ -53,8 +53,8 @@ def parse_chat_session(session_file, target_date=None):
         individual_timestamp = request.get('timestamp', 0)
         
         if individual_timestamp:
-            # Convert individual timestamp to date for filtering
-            msg_date = datetime.fromtimestamp(individual_timestamp / 1000, tz=timezone.utc)
+            # Convert individual timestamp to local timezone for filtering and display
+            msg_date = datetime.fromtimestamp(individual_timestamp / 1000)
             request_date = msg_date.date()
             
             # Filter by target date if specified
