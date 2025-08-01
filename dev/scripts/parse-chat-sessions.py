@@ -165,12 +165,12 @@ def analyze_conversations_for_structure(conversations):
 def extract_tasks(text):
     """Extract tasks and implementation work from conversation."""
     tasks = []
-    # Look for implementation patterns with better context
+    # Look for implementation patterns with complete sentences or meaningful phrases
     patterns = [
-        r"(?:implement(?:ed|ing)?|creat(?:ed|ing)?|build(?:ing)?|develop(?:ed|ing)?)\s+([^.!?\n]{10,80})",
-        r"(?:work(?:ed|ing)?|add(?:ed|ing)?|fix(?:ed|ing)?)\s+(?:on\s+)?([^.!?\n]{10,80})",
-        r"(?:enhanc(?:ed|ing)?|updat(?:ed|ing)?|improv(?:ed|ing)?)\s+([^.!?\n]{10,80})",
-        r"(?:set\s+up|configur(?:ed|ing)?|establish(?:ed|ing)?)\s+([^.!?\n]{10,80})"
+        r"(?:implement(?:ed|ing)?|creat(?:ed|ing)?|build(?:ing|t)?|develop(?:ed|ing)?)\s+([a-zA-Z][^.!?\n]{20,120}(?:[.!?]|$))",
+        r"(?:work(?:ed|ing)?|add(?:ed|ing)?|fix(?:ed|ing)?)\s+(?:on\s+)?([a-zA-Z][^.!?\n]{20,120}(?:[.!?]|$))",
+        r"(?:enhanc(?:ed|ing)?|updat(?:ed|ing)?|improv(?:ed|ing)?)\s+([a-zA-Z][^.!?\n]{20,120}(?:[.!?]|$))",
+        r"(?:set\s+up|configur(?:ed|ing)?|establish(?:ed|ing)?)\s+([a-zA-Z][^.!?\n]{20,120}(?:[.!?]|$))"
     ]
     
     import re
@@ -184,8 +184,10 @@ def extract_tasks(text):
             task = re.sub(r'\s+', ' ', task)  # Normalize whitespace
             task = task.rstrip('.,;:')  # Remove trailing punctuation
             
-            # Skip if too short, too long, or already processed
-            if 10 <= len(task) <= 80 and task.lower() not in processed:
+            # Skip if too short, contains markdown artifacts, or already processed
+            if (20 <= len(task) <= 120 and 
+                task.lower() not in processed and
+                not any(artifact in task for artifact in ['```', '##', '**', '- ['])):
                 processed.add(task.lower())
                 tasks.append(f"- {task}")
     
@@ -196,10 +198,10 @@ def extract_decisions(text):
     """Extract key decisions made during the session."""
     decisions = []
     patterns = [
-        r"(?:decided?|chose|went\s+with)\s+(?:to\s+)?([^.!?\n]{10,100})",
-        r"(?:option|approach|choice)\s+\d*[:.]\s*([^.!?\n]{10,100})",
-        r"(?:strategy|plan|direction)[:.]\s*([^.!?\n]{10,100})",
-        r"(?:let's|we'll|we\s+should)\s+(?:use|go\s+with|implement)\s+([^.!?\n]{10,100})"
+        r"(?:decided?|chose|went\s+with)\s+(?:to\s+)?([a-zA-Z][^.!?\n]{20,150}(?:[.!?]|$))",
+        r"(?:option|approach|choice)\s+\d*[:.]\s*([a-zA-Z][^.!?\n]{20,150}(?:[.!?]|$))",
+        r"(?:strategy|plan|direction)[:.]\s*([a-zA-Z][^.!?\n]{20,150}(?:[.!?]|$))",
+        r"(?:let's|we'll|we\s+should)\s+(?:use|go\s+with|implement)\s+([a-zA-Z][^.!?\n]{20,150}(?:[.!?]|$))"
     ]
     
     import re
@@ -213,7 +215,9 @@ def extract_decisions(text):
             decision = re.sub(r'\s+', ' ', decision)
             decision = decision.rstrip('.,;:')
             
-            if 10 <= len(decision) <= 100 and decision.lower() not in processed:
+            if (20 <= len(decision) <= 150 and 
+                decision.lower() not in processed and
+                not any(artifact in decision for artifact in ['```', '##', '**', '- ['])):
                 processed.add(decision.lower())
                 decisions.append(f"- {decision}")
     
@@ -224,10 +228,10 @@ def extract_problems_and_solutions(text):
     """Extract problems encountered and their solutions."""
     problems = []
     patterns = [
-        r"(?:issue|problem|error|bug)[:.]\s*([^.!?\n]{10,100})",
-        r"(?:fixed|solved|resolved|addressed)\s+(?:the\s+)?([^.!?\n]{10,100})",
-        r"(?:hanging|failing|not\s+working)[:.]\s*([^.!?\n]{10,100})",
-        r"(?:challenge|difficulty|trouble)[:.]\s*([^.!?\n]{10,100})"
+        r"(?:issue|problem|error|bug)[:.]\s*([^.!?\n]{15,150}[.!?]?)",
+        r"(?:fixed|solved|resolved|addressed)\s+(?:the\s+)?([^.!?\n]{15,150}[.!?]?)",
+        r"(?:hanging|failing|not\s+working)[:.]\s*([^.!?\n]{15,150}[.!?]?)",
+        r"(?:challenge|difficulty|trouble)[:.]\s*([^.!?\n]{15,150}[.!?]?)"
     ]
     
     import re
@@ -241,7 +245,7 @@ def extract_problems_and_solutions(text):
             problem = re.sub(r'\s+', ' ', problem)
             problem = problem.rstrip('.,;:')
             
-            if 10 <= len(problem) <= 100 and problem.lower() not in processed:
+            if 15 <= len(problem) <= 150 and problem.lower() not in processed:
                 processed.add(problem.lower())
                 problems.append(f"- {problem}")
     
@@ -252,11 +256,11 @@ def extract_ideas(text):
     """Extract ideas and concepts discussed."""
     ideas = []
     patterns = [
-        r"(?:idea|concept|thought)[:.]\s*([^.!?\n]{10,120})",
-        r"(?:approach|strategy|method)[:.]\s*([^.!?\n]{10,120})",
-        r"(?:could|might|maybe)\s+(?:we\s+)?([^.!?\n]{10,120})",
-        r"(?:consider|suggest|recommend)\s+([^.!?\n]{10,120})",
-        r"(?:what\s+if|how\s+about)\s+([^.!?\n]{10,120})"
+        r"(?:idea|concept|thought)[:.]\s*([^.!?\n]{15,180}[.!?]?)",
+        r"(?:approach|strategy|method)[:.]\s*([^.!?\n]{15,180}[.!?]?)",
+        r"(?:could|might|maybe)\s+(?:we\s+)?([^.!?\n]{15,180}[.!?]?)",
+        r"(?:consider|suggest|recommend)\s+([^.!?\n]{15,180}[.!?]?)",
+        r"(?:what\s+if|how\s+about)\s+([^.!?\n]{15,180}[.!?]?)"
     ]
     
     import re
@@ -270,7 +274,7 @@ def extract_ideas(text):
             idea = re.sub(r'\s+', ' ', idea)
             idea = idea.rstrip('.,;:')
             
-            if 10 <= len(idea) <= 120 and idea.lower() not in processed:
+            if 15 <= len(idea) <= 180 and idea.lower() not in processed:
                 processed.add(idea.lower())
                 ideas.append(f"- {idea}")
     
@@ -281,10 +285,10 @@ def extract_next_steps(text):
     """Extract next steps and action items."""
     next_steps = []
     patterns = [
-        r"(?:next|later|continue)\s+(?:we\s+)?(?:should\s+|will\s+|need\s+to\s+)?([^.!?\n]{10,100})",
-        r"(?:need\s+to|should|plan\s+to)\s+([^.!?\n]{10,100})",
-        r"(?:todo|action\s+item)[:.]\s*([^.!?\n]{10,100})",
-        r"(?:for\s+next\s+session|tomorrow|future)[:.]\s*([^.!?\n]{10,100})"
+        r"(?:next|later|continue)\s+(?:we\s+)?(?:should\s+|will\s+|need\s+to\s+)?([^.!?\n]{15,150}[.!?]?)",
+        r"(?:need\s+to|should|plan\s+to)\s+([^.!?\n]{15,150}[.!?]?)",
+        r"(?:todo|action\s+item)[:.]\s*([^.!?\n]{15,150}[.!?]?)",
+        r"(?:for\s+next\s+session|tomorrow|future)[:.]\s*([^.!?\n]{15,150}[.!?]?)"
     ]
     
     import re
@@ -298,7 +302,7 @@ def extract_next_steps(text):
             step = re.sub(r'\s+', ' ', step)
             step = step.rstrip('.,;:')
             
-            if 10 <= len(step) <= 100 and step.lower() not in processed:
+            if 15 <= len(step) <= 150 and step.lower() not in processed:
                 processed.add(step.lower())
                 next_steps.append(f"- {step}")
     
@@ -354,19 +358,31 @@ def format_conversations_for_summary(conversations):
         formatted.append("")
         formatted.append("**User:**")
         
-        # Truncate very long messages
+        # Truncate very long messages at word boundaries
         user_msg = conv['user_message']
-        if len(user_msg) > 500:
-            user_msg = user_msg[:500] + "..."
-        formatted.append(f"> {user_msg}")
+        if len(user_msg) > 2000:
+            # Find the last word boundary before 2000 chars
+            truncate_pos = user_msg.rfind(' ', 0, 2000)
+            if truncate_pos > 1500:  # Make sure we don't truncate too early
+                user_msg = user_msg[:truncate_pos] + "..."
+            else:
+                user_msg = user_msg[:2000] + "..."
+        
+        # Use proper markdown formatting instead of blockquotes
+        formatted.append(f"{user_msg}")
         formatted.append("")
         
         if conv['copilot_response']:
             formatted.append("**Copilot:**")
             copilot_msg = conv['copilot_response']
-            if len(copilot_msg) > 500:
-                copilot_msg = copilot_msg[:500] + "..."
-            formatted.append(f"> {copilot_msg}")
+            if len(copilot_msg) > 2000:
+                # Find the last word boundary before 2000 chars
+                truncate_pos = copilot_msg.rfind(' ', 0, 2000)
+                if truncate_pos > 1500:  # Make sure we don't truncate too early
+                    copilot_msg = copilot_msg[:truncate_pos] + "..."
+                else:
+                    copilot_msg = copilot_msg[:2000] + "..."
+            formatted.append(f"{copilot_msg}")
             formatted.append("")
         
         formatted.append("---")
