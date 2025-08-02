@@ -94,6 +94,7 @@ When the user requests these actions, follow the exact documented workflows:
 4. **Check existing files** before creating new ones
 5. **Use the hybrid production approach** - Source files in git, large outputs Google Drive only
 6. **Always verify operations** - Use status checks after git and sync operations
+7. **Terminal commands must be single-line** - Convert multi-line commands using `&&` or `;` operators
 
 ### Workflow Documentation
 - `dev/workflows/commit-local.md` - Git and Google Drive sync process
