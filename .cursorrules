@@ -63,6 +63,8 @@ When the user requests these actions, follow the exact documented workflows:
 - **60-120 second duration** optimal
 - **4-scene structure** (based on existing audio files)
 - **Educational or character-building themes**
+- **Use comprehensive-episode-guide.md format** for all story development (single source of truth)
+- **Character profiles**: Use existing character-profile-template.md format
 
 ## Automation Systems
 
