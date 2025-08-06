@@ -9,10 +9,6 @@ When the user requests these actions, follow the exact documented workflows:
 ### commit-local
 **Trigger**: "commit-local", "run commit-local", "sync local changes"
 **Action**: Execute the commit-local workflow exactly as documented in `dev/workflows/commit-local.md`
-**Critical Rules**:
-- ALWAYS use multiple `-m` flags for git commits, NEVER multi-line strings
-- Follow the exact 11-step process: git status → add → commit → log → push → status → rclone sync → rclone check
-- Example: `git commit -m "title" -m "detail 1" -m "detail 2"`
 
 ### process-episode
 **Trigger**: "process-episode", "Process episode: [path]"
@@ -20,8 +16,9 @@ When the user requests these actions, follow the exact documented workflows:
 **Steps**: Generate PDF → Extract content → Create metadata → Generate YouTube description
 
 ### text-to-speech
-**Trigger**: "read-profile", "Read [character] profile", "Use TTS for [character]"
+**Trigger**: "read-profile", "Read [character] profile", "Use TTS for [character]", "read guide", "read markdown"
 **Action**: Execute the text-to-speech workflow from `dev/workflows/text-to-speech.md`
+**Script**: `dev/scripts/markdown-tts.py`
 **Steps**: Clean markdown → Call Google Cloud TTS → Play/save audio → Cache results
 
 ### utility-commands

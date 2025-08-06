@@ -183,7 +183,7 @@ The .cursorrules file provides natural language command interface:
 ```
 dev/
 ├── scripts/                    # Automation scripts
-│   ├── read-profile.py        # TTS character reading script
+│   ├── markdown-tts.py        # TTS markdown reading script
 │   ├── parse-chat-sessions.py # VS Code chat session extraction
 │   ├── daily-session-summary.sh # Automated development tracking
 │   └── setup-daily-summaries.sh # Session automation setup
@@ -264,7 +264,7 @@ gcloud config get-value project
 
 Add debug output to scripts:
 ```python
-# In read-profile.py, add verbose output
+# In markdown-tts.py, add verbose output
 print(f"Processing character: {character_name}")
 print(f"Audio cache location: {cache_dir}")
 ```

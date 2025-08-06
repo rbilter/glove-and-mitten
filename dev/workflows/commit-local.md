@@ -28,78 +28,46 @@ The `.rclone-filter` file controls what gets synced to Google Drive:
 5. ✅ **Syncs to Google Drive** via rclone
 6. ✅ **Verifies sync status** and reports any issues
 
-## Workflow Steps
+## Executable Steps
 
-### Phase 1: Local Assessment
+Execute these commands in order:
+
 1. **Check Git Status**
    ```bash
    git status --porcelain
    ```
 
-2. **Show Changes Summary**
-   - New files created (untracked files marked with ??)
-   - Modified files (marked with M)
-   - Deleted files (marked with D)
-   - Staged files (marked with A)
-
-3. **Verify All File Types**
-   - ✅ **Staged changes**: Already ready for commit
-   - ✅ **Unstaged changes**: Modified tracked files
-   - ✅ **Untracked files**: New files not yet in git (IMPORTANT: Don't miss these!)
-
-### Phase 2: Git Operations
-4. **Stage All Changes Including Untracked Files**
+2. **Stage All Changes**
    ```bash
-   git add -A  # Includes untracked files, modifications, and deletions
+   git add -A
    ```
 
-5. **Generate Smart Commit Message**
-   - Analyze what types of files changed
-   - Create descriptive commit message
-   - Include date and change summary
-
-6. **Commit Changes**
-   
-   **Option A: Single-line message (recommended for automation)**
+3. **Commit Changes** (use multiple -m flags, never multi-line strings)
    ```bash
-   git commit -m "[Generated message based on changes]"
-   ```
-   
-   **Option B: Multi-line message (use multiple -m flags)**
-   ```bash
-   git commit -m "Summary of changes" -m "- Detailed point 1" -m "- Detailed point 2"
-   ```
-   
-   **⚠️ Important:** Avoid embedded newlines in `-m` strings as they can cause git to hang:
-   ```bash
-   # DON'T DO THIS (hangs):
-   git commit -m "Title
-   
-   Body with details"
+   git commit -m "Summary of changes" -m "Detail 1" -m "Detail 2"
    ```
 
-7. **Verify Commit Success**
+4. **Verify Commit**
    ```bash
-   git log -1 --oneline  # Confirm commit was created
+   git log -1 --oneline
    ```
 
-8. **Push to Remote Repository**
+5. **Push to Remote**
    ```bash
    git push origin main
    ```
 
-9. **Verify Push Success**
+6. **Verify Push**
    ```bash
-   git status -b  # Confirm local branch is up to date with remote
+   git status -b
    ```
 
-### Phase 3: Google Drive Sync
-10. **Sync to Google Drive**
+7. **Sync to Google Drive**
    ```bash
    rclone sync . gdrive:glove-and-mitten --filter-from .rclone-filter --progress
    ```
 
-11. **Verify Sync**
+8. **Verify Sync**
    ```bash
    rclone check . gdrive:glove-and-mitten --filter-from .rclone-filter
    ```

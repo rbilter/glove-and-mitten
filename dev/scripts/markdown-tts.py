@@ -1,6 +1,6 @@
 #!/home/rbilter/work/repos/glove-and-mitten/.venv/bin/python
 """
-Google Cloud Text-to-Speech Reader for Character Profiles
+Google Cloud Text-to-Speech Reader for Markdown Files
 Converts markdown files to high-quality speech using Google Cloud TTS
 """
 

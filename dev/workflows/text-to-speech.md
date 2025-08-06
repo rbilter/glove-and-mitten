@@ -72,7 +72,12 @@ Provides high-quality text-to-speech reading of charac### Usage Examples
 
 ## Workflow Scripts
 
-### Main TTS Script: `scripts/read-profile.py`
+### Main TTS Script: `scripts/markdown-tts.py`
+
+**Purpose**: Convert any markdown file to high-quality speech
+- **Character profiles**: Automatic discovery by name
+- **Episode guides**: Direct file path reading  
+- **Any .md file**: Full markdown-to-speech conversion
 - Converts markdown to clean text
 - Calls Google Cloud TTS API
 - Plays audio or saves to file
@@ -124,7 +129,7 @@ make read-profile
 ## File Structure
 ```
 dev/scripts/
-├── read-profile.py             # Main TTS script
+├── markdown-tts.py             # Main TTS script
 ├── parse-chat-sessions.py      # Chat automation
 ├── daily-session-summary.sh    # Session tracking
 └── setup-daily-summaries.sh    # Automation setup

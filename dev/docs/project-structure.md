@@ -50,7 +50,7 @@ glove-and-mitten/
 │   └── README.md
 ├── dev/                              # 🔧 DEVELOPMENT TOOLS
 │   ├── scripts/
-│   │   ├── read-profile.py           # TTS character reading
+│   │   ├── markdown-tts.py           # TTS markdown reading
 │   │   ├── parse-chat-sessions.py    # VS Code chat session extraction
 │   │   ├── daily-session-summary.sh  # Automated development tracking
 │   │   └── setup-daily-summaries.sh  # Session automation setup
@@ -139,7 +139,7 @@ Scripts, automation, configuration, and documentation for the technical developm
 
 ### dev/ - Development Tools
 - **scripts/**: Automation scripts and development utilities
-  - `read-profile.py`: Google Cloud TTS character profile audio generation
+  - `markdown-tts.py`: Google Cloud TTS markdown-to-speech conversion for any .md file
   - `parse-chat-sessions.py`: VS Code chat session extraction and processing
   - `daily-session-summary.sh`: Automated development session tracking
   - `setup-daily-summaries.sh`: Installation and management of session automation
@@ -183,7 +183,7 @@ Scripts, automation, configuration, and documentation for the technical developm
 - **TTS System**: Google Cloud Text-to-Speech with character voice generation
   - Configuration in `dev/config/tts-config.json`
   - Audio cache in `dev/cache/audio-cache/` (excluded from sync)
-  - Scripts in `dev/scripts/read-profile.py`
+  - Scripts in `dev/scripts/markdown-tts.py`
 - **Chat Automation**: VS Code integration for development session tracking
   - Chat session extraction via `dev/scripts/parse-chat-sessions.py`
   - Automated daily summaries via `dev/scripts/daily-session-summary.sh`
