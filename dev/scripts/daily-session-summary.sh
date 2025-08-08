@@ -48,6 +48,8 @@ ensure_month_directory() {
 }
 
 # Function to detect git activity today
+# Excludes automation-generated files from activity detection to prevent
+# false positives when only session summaries or automation logs have changed
 detect_activity() {
     local today_commits
     local today_changes
@@ -55,8 +57,13 @@ detect_activity() {
     # Check for commits today
     today_commits=$(git log --since="00:00" --until="23:59" --oneline 2>/dev/null | wc -l)
     
-    # Check for uncommitted changes
-    today_changes=$(git status --porcelain 2>/dev/null | wc -l)
+    # Check for uncommitted changes, excluding automation-generated files
+    # Exclude session files, heartbeat logs, and other automation artifacts
+    today_changes=$(git status --porcelain 2>/dev/null | \
+        grep -v "dev/logs/conversation-summaries/" | \
+        grep -v "dev/logs/automation-heartbeat.log" | \
+        grep -v "\.backup$" | \
+        wc -l)
     
     if [ "$today_commits" -gt 0 ] || [ "$today_changes" -gt 0 ]; then
         return 0  # Activity detected
