@@ -13,12 +13,13 @@ Ensures local changes are properly committed to Git and synchronized with Google
 - "Sync my local work to git and google drive"
 
 ## What commit-local Does Automatically:
-1. ✅ **Checks local status** - Shows what files have changed
-2. ✅ **Stages all changes** to Git
-3. ✅ **Commits with descriptive message** based on actual changes
-4. ✅ **Pushes to GitHub** - Updates remote repository
-5. ✅ **Syncs to Google Drive** - Excludes unnecessary files via `.rclone-filter`
-6. ✅ **Verifies sync integrity** - Ensures backup is complete
+1. ✅ **Validates automation** - Runs comprehensive test suite (45 tests)
+2. ✅ **Checks local status** - Shows what files have changed
+3. ✅ **Stages all changes** to Git
+4. ✅ **Commits with descriptive message** based on actual changes
+5. ✅ **Pushes to GitHub** - Updates remote repository
+6. ✅ **Syncs to Google Drive** - Excludes unnecessary files via `.rclone-filter`
+7. ✅ **Verifies sync integrity** - Ensures backup is complete
 
 ## File Exclusions
 The `.rclone-filter` file controls what gets synced to Google Drive:
@@ -32,45 +33,68 @@ The `.rclone-filter` file controls what gets synced to Google Drive:
 
 Execute these commands in order:
 
-1. **Check Git Status**
+1. **Run Test Suite** (⚠️ HALT if any tests fail)
+   ```bash
+   ./dev/tests/run_tests.sh
+   ```
+
+2. **Check Git Status**
    ```bash
    git status --porcelain
    ```
 
-2. **Stage All Changes**
+3. **Stage All Changes**
    ```bash
    git add -A
    ```
 
-3. **Commit Changes** (use multiple -m flags, never multi-line strings)
+4. **Commit Changes** (use multiple -m flags, never multi-line strings)
    ```bash
    git commit -m "Summary of changes" -m "Detail 1" -m "Detail 2"
    ```
 
-4. **Verify Commit**
+5. **Verify Commit**
    ```bash
    git log -1 --oneline
    ```
 
-5. **Push to Remote**
+6. **Push to Remote**
    ```bash
    git push origin main
    ```
 
-6. **Verify Push**
+7. **Verify Push**
    ```bash
    git status -b
    ```
 
-7. **Sync to Google Drive**
+8. **Sync to Google Drive**
    ```bash
    rclone sync . gdrive:glove-and-mitten --filter-from .rclone-filter --progress
    ```
 
-8. **Verify Sync**
+9. **Verify Sync**
    ```bash
    rclone check . gdrive:glove-and-mitten --filter-from .rclone-filter
    ```
+
+## Test Failure Protocol
+
+**If `./dev/tests/run_tests.sh` fails:**
+
+1. **Review test output** - Identify which specific tests failed
+2. **Investigate root cause:**
+   - **Code change broke functionality** → Fix the automation scripts
+   - **Test needs updating** → Update test expectations if behavior intentionally changed
+   - **Environment issue** → Check dependencies, file permissions, git state
+3. **Re-run tests** until all 45 tests pass
+4. **Only proceed with commit** after full test suite passes
+
+**Common test failure causes:**
+- Missing dependencies in `.venv`
+- Changed function signatures in automation scripts  
+- File permission issues on test scripts
+- Git repository state affecting shell script tests
 
 ## Use Cases
 - **After creating new episodes** - Commit PowerPoint files, metadata

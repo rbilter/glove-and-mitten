@@ -38,6 +38,64 @@ dev/workflows/commit-local.md        # Git + GitHub + Google Drive sync
 dev/workflows/text-to-speech.md     # TTS character profile reading
 ```
 
+## AI Assistant Guidelines (VS Code + GitHub Copilot)
+
+### Core Workflow Commands
+When working with AI assistants, use these exact trigger phrases:
+
+**commit-local**: "commit-local", "run commit-local", "sync local changes"
+- Execute: `dev/workflows/commit-local.md` workflow
+- **ALWAYS run tests first**: `./dev/tests/run_tests.sh` (45 tests must pass)
+- Steps: Test → Status → Stage → Commit → Push → Sync → Verify
+
+**process-episode**: "process-episode", "Process episode: [path]"  
+- Execute: `dev/workflows/process-episode.md` workflow
+- Steps: Generate PDF → Extract content → Create metadata → Generate YouTube description
+
+**text-to-speech**: "read-profile", "Read [character] profile", "Use TTS for [character]"
+- Execute: `dev/workflows/text-to-speech.md` workflow  
+- Script: `dev/scripts/markdown-tts.py`
+- Steps: Clean markdown → Google Cloud TTS → Play/save audio → Cache results
+
+**utility-commands**: "help", "status", "clean", "list characters", "list voices"
+- Show project information and utilities
+- Commands: "help" (show workflows), "status" (git status), "clean" (remove cache), "list characters" (TTS profiles), "list voices" (Google TTS voices)
+
+### Content Guidelines
+- **Character consistency**: Glove (practical, organized), Mitten (warm-hearted, creative)
+- **Family-friendly PG content** with realistic character conflicts
+- **Episode format**: 3-5 panel comic style, 60-120 second duration, 4-scene structure
+- **Educational themes** with character-building focus
+
+### Project Structure Rules
+- **Character files**: `content/characters/main/` or `content/characters/sagas/[saga-name]/`
+- **Episode naming**: `##-[story]-[episode].pptx` (e.g., `01-lights-tuff-daze-episode.pptx`)
+- **Monthly directories**: `YYYY-MM/` format (e.g., `2025-07/`, `2025-08/`)
+- **Test suite**: 45 comprehensive tests covering all automation scripts
+- **Production workflow**: Metadata in git, large files (videos) Google Drive only
+
+### Automation Systems
+- **PowerPoint → PDF**: Automated conversion via LibreOffice
+- **Content extraction**: pdftotext for dialogue and content
+- **Metadata generation**: YouTube description, tags, upload checklist
+- **Chat sessions**: Automatically parsed and included in daily summaries
+
+### Development Environment
+- **Python virtual environment**: `.venv/` (auto-configured)
+- **Testing framework**: `./dev/tests/run_tests.sh` 
+- **Required tools**: rclone, LibreOffice, pdftotext, Python 3, Google Cloud TTS
+- **Git workflow**: Tests → Commit → Push → Sync to Google Drive
+
+### AI Behavioral Rules
+1. **Follow existing workflows exactly** - Don't create ad-hoc processes
+2. **Run tests before commits** - All 45 tests must pass via `./dev/tests/run_tests.sh`
+3. **Use documented file locations** - Respect established structure
+4. **Check existing files** before creating new ones
+5. **Terminal commands must be single-line** - Use `&&` or `;` operators
+6. **Always verify operations** - Use status checks after git and sync operations
+7. **Preserve user's naming conventions** - Don't change established patterns
+8. **Use hybrid production approach** - Source files in git, large outputs Google Drive only
+
 ## Project Structure
 
 ### 📁 Core Directories
